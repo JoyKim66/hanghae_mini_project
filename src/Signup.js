@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
-import { emailCheck } from './common';
+import { useDispatch } from 'react-redux';
+import { emailCheck } from './shared/common';
+import { signUpFB } from "./redux/modules/user"
 
 const Signup = () => {
 	const [id, setId] = useState("");
 	const [pwd, setPwd] = useState("");
 	const [pwd_check, setPwdCheck] = useState("");
 	const [user_name, setUserName] = useState("");
+	const dispatch = useDispatch();
 
 	const signupFu = async () => {
 		if (!id || !pwd || !user_name) {
@@ -24,6 +27,7 @@ const Signup = () => {
       return;
     }
 		const new_obj = {id, pwd, user_name}
+		dispatch(signUpFB(new_obj))
   }
 
 	return (

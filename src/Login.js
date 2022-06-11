@@ -1,11 +1,28 @@
 import { useState } from "react";
 import styled from "styled-components"
+import { useDispatch } from 'react-redux';
+import { loginFB } from "./redux/modules/user"
+import { emailCheck } from './shared/common';
 
 const Login = () => {
-	const [id, setId] = useState("");
-	const [pwd, setPwd] = useState("");
-	
+	const [userId, setId] = useState("");
+	const [password, setPwd] = useState("");
+	const dispatch =  useDispatch();
 
+	const login = () => {
+    if (userId === "" || password === "") {
+      window.alert("아이디와 비밀번호를 모두 입력해주세요!");
+      return;
+    }
+
+		if(!emailCheck(userId)){
+			window.alert('아이디가 이메일 형식이 맞지 않습니다!');
+      return;
+		}
+
+    dispatch(loginFB(userId, password));
+  };
+	
 	return (
 		<LoginInner>
 				<H2>로그인</H2>
@@ -15,11 +32,11 @@ const Login = () => {
 					}}/>
 				</label>
 				<label>
-					<Input type="password" placeholder="비밀번호를 입력해주세용!" onChange={(e) => {
+					<Input type="password" placeholder="비밀번호를 입력해주세요!" onChange={(e) => {
 						setPwd(e.target.value)
 					}}/>
 				</label>
-				<Btn>로그인하기</Btn>
+				<Btn onClick={login}>로그인하기</Btn>
 				<SubText>아직 커피바라 계정이 없나요? <a href="/signup">회원가입</a></SubText>
 		</LoginInner>
 	);
