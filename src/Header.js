@@ -1,11 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components"
-import { useNavigate } from 'react-router-dom';
+import {useHistory} from "react-router-dom";
 
 
 const Header = () => {
 	const [token, settoken] = useState(false);
-	const navigate = useNavigate();
+	const history = useHistory();
 
 
 	return (
@@ -23,10 +23,10 @@ const Header = () => {
 				: (
 					<ul className="userInner">
 						<li onClick={() => {
-							navigate("/login")
+            				history.push("login");
 						}}>로그인</li>
 						<li onClick={() => {
-							navigate("/signup")
+							history.push("/signup");
 						}}> 회원가입</li>
 					</ul>
 				) 
