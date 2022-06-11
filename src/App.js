@@ -1,9 +1,12 @@
+import React from "react";
 import { Route } from "react-router-dom";
 import { ConnectedRouter } from 'connected-react-router'
 import { history } from "./redux/configStore";
 import Header from "./Header"
 import Login from "./Login";
 import Signup from "./Signup";
+import  "./App.css"
+
 
 function App() {
   return (
