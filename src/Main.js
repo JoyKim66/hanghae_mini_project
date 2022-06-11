@@ -161,9 +161,6 @@ const Container = styled(ImageList)`
   overflow-y: visible !important;
   }
 `;
-const ImageBox = styled(ImageListItem)`
-    margin: 0; !important;  
-`;
 
 const AddButton = styled.div`
     display: flex;
