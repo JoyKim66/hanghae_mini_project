@@ -1,5 +1,6 @@
-import { setCookie, getCookie, deleteCookie } from "../../shared/cookie";
+
 import axios from "axios";
+import { localStorageRemove, localStorageSet } from "../../shared/localStorage";
 
 // Actions Type
 const LOG_IN = "LOG_IN";
@@ -14,7 +15,6 @@ const getUser = (user) => ({type: GET_USER, user});
 // 회원가입 middleware
 export const signUpFB = (payload) => {
 	return function (dispatch, getState, { history }) {
-		console.log("회원가입미듈웨어:", payload);
 		axios.post("/db.json", {
 			userId: payload.userId,
 			password: payload.password,
@@ -31,24 +31,44 @@ export const signUpFB = (payload) => {
 	}
 }
 
+// 아이디 중복 검사 middleware
+export const idDoubleCheckFB = (userId) => {
+	return function (dispatch, getState, {history}){
+		axios.post("/db.json", {
+			userid: userId
+		})
+		.then((res) => {
+			console.log(res)
+		})
+	}
+}
+
 // 로그인 middleware
 export const loginFB = (userId, password) => {
 	return function (dispatch, getState, {history}){
-		console.log(history)
 		axios.post("/db.json", {
 			userid: userId,
 			password: password,
 		})
 		.then((res) => {
-			console.log(res.headers.authorization.split("BEARER")[1]);
+			const token = res.token;
+			localStorageSet("jwtToken", token);
+			dispatch(
+				logIn({
+					is_login: true,
+					userId: userId
+				})
+			);
 		})
 	}
 }
 
 // 로그아웃 middleware
-const logoutFB = () => {
+export const logoutFB = () => {
 	return function (dispatch, getState, {history}) {
-
+		localStorageRemove("jwtToken");
+		dispatch(logOut());
+		history.replace("/");
 	}
 }
 
@@ -66,7 +86,6 @@ const handleUser = (state = initialState, action = {}) => {
 	switch(action.type) {
 		case LOG_IN: {
 			console.log("유저정보 ", state);
-			setCookie("is_login", "success");
 			return {...state, user: action.user, is_login: true};
 		}
 

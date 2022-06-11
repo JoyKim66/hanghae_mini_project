@@ -11,7 +11,7 @@ const Signup = () => {
 	const [user_name, setUserName] = useState("");
 	const dispatch = useDispatch();
 
-	const signupFu = async () => {
+	const signupFu = () => {
 		if (!id || !pwd || !user_name) {
       window.alert("아이디, 패스워드, 닉네임을 모두 입력해주세요!");
       return;
@@ -30,6 +30,14 @@ const Signup = () => {
 		dispatch(signUpFB(new_obj))
   }
 
+	const idDoubleCheck = () => {
+		if (!id) {
+      window.alert("아이디를 입력해주세요!");
+      return;
+    }
+		
+	}
+
 	return (
 		<SignupInner>
 			<H2>회원가입</H2>
@@ -37,7 +45,8 @@ const Signup = () => {
 				<p>아이디</p> 
 				<Input onChange={(e) => {
 					setId(e.target.value);
-				}} placeholder="이메일"/>
+				}} placeholder="아이디(이메일)"/>
+				<button className='id_double_check' onClick={idDoubleCheck}>중복확인</button>
 			</label>
 			<label>
 				<p>닉네임</p> 
@@ -72,8 +81,25 @@ const SignupInner = styled.div`
 	& label {
 		display: block;
 		margin-bottom: 20px;
+		position: relative;
 		& .pwConfirm {
 			margin-top: 10px;
+		}
+		& .id_double_check {
+			font-size: 12px;
+			background-color: #333;
+			color: #fff;
+			padding: 5px 8px;
+			border-radius: 0.4em;
+			position: absolute;
+			top: 50%;
+			right: 10px;
+			transform: translateY(-10%);
+		}
+		& p {
+			font-size:12px;
+			margin-bottom: 4px;
+			font-weight: 600;
 		}
 	}
 `
@@ -85,6 +111,9 @@ const Input = styled.input`
 	padding: 10px;
 	border: 2px solid #333;
 	border-radius: 3px;
+	&::placeholder {
+		font-size: 12px;
+	}
 `
 const H2 = styled.h2`
 	font-size: 26px;
