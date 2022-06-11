@@ -7,36 +7,77 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Button from '@mui/material/Button';
 
+
+
+const Input = styled('input')({
+    display: 'none',
+  });
 
 const Write = () => {
-    const [coffeebeanname, setcoffeebeanname] = React.useState('');
-    const handleChange = (event) => {
-      setcoffeebeanname(event.target.value);
+    //state관리
+    const [coffeebeanname, setCoffeebeanName] = React.useState('');
+    const [cafename, setCafename] = React.useState(null);
+    const [review, setReview] = React.useState(null);
+    
+    //원두배열 (store에 저장하기)
+    const coffeebean_list = [
+        "에티오피아", 
+        "킬리만자로", 
+        "과테말라", 
+        "케냐", 
+        "콜롬비아", 
+        "하와이 코나", 
+        "브라질 산토스", 
+        "블루마운틴", 
+        "모카", 
+        "디카페인"]
+
+    //input값 change관리
+    const handleSelectChange = (e) => {
+        console.log(e.target.value);
+      setCoffeebeanName(e.target.value);
     };
+
+    const handleReviweChange = (e) => {
+        // console.log(e.target.value);
+        setReview(e.target.value);
+    };
+    const handleNameChange = (e) => {
+        // console.log(e.target.value);
+        setCafename(e.target.value);
+        
+    }
+    const uploadImage = (e) => {
+        console.log(e.target.files[0].name);
+    }
+
+    const addPost = (e) => {
+        //리덕스에 저장하기
+        console.log(cafename);
+        console.log(review);
+        console.log(coffeebeanname);
+        console.log();
+    }
+
     return (
 
     <Container>
-        
     <div>
         <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">coffeebeanname</InputLabel>
             <SelectBox
                 labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={coffeebeanname}
+                id="coffeebeanname"
+                value={coffeebeanname}   
                 label="coffeebeanname"
-                onChange={handleChange}
+                onChange={handleSelectChange}
             >
-                <MenuItem value={10}>에티오피아</MenuItem>
-                <MenuItem value={20}>킬리만자로</MenuItem>
-                <MenuItem value={30}>케냐</MenuItem>
-                <MenuItem value={30}>콜롬비아</MenuItem>
-                <MenuItem value={30}>하와이 코나</MenuItem>
-                <MenuItem value={30}>브라질 산토스</MenuItem>
-                <MenuItem value={30}>블루마운틴</MenuItem>
-                <MenuItem value={30}>모카</MenuItem>
-                <MenuItem value={30}>디카페인</MenuItem>
+                {coffeebean_list.map((coffeebean,idx) => (
+                    <MenuItem key={idx} value={coffeebean}>{coffeebean}</MenuItem>
+                ))}
+                
             </SelectBox>
         </FormControl>
         <FormBox
@@ -51,11 +92,20 @@ const Write = () => {
             required
             id="outlined-required"
             label="카페이름"
+            onChange={handleNameChange}
                 />
-            </TextBox>
-                
+            </TextBox>   
             <ImageBox>이미지를 선택해주세요
-                <input type="file"/>
+            <label htmlFor="contained-button-file">
+                <Input accept="image/*" 
+                id="contained-button-file" 
+                multiple type="file"
+                onChange={uploadImage}
+                />
+                <Button variant="contained" component="span">
+                    Upload
+                </Button>
+            </label>
             </ImageBox>
                 
             </FormBox>
@@ -73,17 +123,17 @@ const Write = () => {
           id="outlined-multiline-static"
           label="카페 후기 상세내용"
           multiline
+          onChange={handleReviweChange}
           rows={4}
             />
         </Box>
         <ButtonWrap>
-            <Button>뒤로가기</Button>
-            <Button>등록하기</Button>
+            <Button2>뒤로가기</Button2>
+            <Button2 onClick={addPost}>등록하기</Button2>
         </ButtonWrap>
     </div>   
     </Container>
     
-
     )
 }
 
@@ -94,9 +144,9 @@ const Container = styled.div`
     justify-content: center;
     border: 1px solid #eee;
     padding:10% 0 10% 0;
-    width: 50%;
-    height: 50vh;
     margin: 20px auto;
+    width: 100%;
+    height: 80vh;
 `;
 
 const SelectBox = styled(Select)`
@@ -112,7 +162,7 @@ const TextBox = styled.div`
 `;
 const ImageBox = styled.div`
     border: 1px solid #acabab;
-    width: 34ch;
+    width: 35ch;
     height: 8ch;
     margin: auto;
     display: flex;
@@ -126,7 +176,7 @@ const ButtonWrap = styled.div`
     justify-content: center;
 `;
 
-const Button = styled.button`
+const Button2 = styled.button`
     margin: 0 10px;
     width: 100px;
     height: 30px;

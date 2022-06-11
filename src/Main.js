@@ -4,15 +4,17 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 
-import {useNavigate} from "react-router-dom";
+
+import {useHistory} from "react-router-dom";
 
 
 import styled from 'styled-components';
 import writebtn from "./writebtn.png"
 
 
+
 function Main() {
-    // const navigate = useNavigate();
+    const history = useHistory();
   return (
     <WholeContainer>
         <Category>카테고리
@@ -57,7 +59,7 @@ function Main() {
         ))}
         <AddButton>
             <Img src={writebtn} onClick={()=>{
-                    // navigate("/")
+                  history.push("/write")
             }}/>
         </AddButton>
             
