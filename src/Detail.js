@@ -1,10 +1,13 @@
 import * as React from 'react';
 import styled from "styled-components";
 
+import Comment from './Comment';
+
 
 
 const Detail = () => {
     return (
+        <div>
         <Container>
             <ImageBox>이미지부분</ImageBox>
             <TextBox>
@@ -26,6 +29,8 @@ const Detail = () => {
                 </ReviewBox>
             </TextBox>
         </Container>
+        <Comment/>
+    </div>
     )
 }
 
