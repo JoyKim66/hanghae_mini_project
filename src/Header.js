@@ -1,12 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components"
-import { useHistory } from 'react-router-dom';
-
+import { useHistory } from "react-router-dom";
 
 const Header = () => {
 	const [token, settoken] = useState(false);
 	const history = useHistory();
-
 	return (
 		<HeaderWrap>
 			<HeaderInner>
@@ -22,10 +20,10 @@ const Header = () => {
 				: (
 					<ul className="userInner">
 						<li onClick={() => {
-							history("/login")
+							history.push("/login")
 						}}>로그인</li>
 						<li onClick={() => {
-							history("/signup")
+							history.push("/signup")
 						}}> 회원가입</li>
 					</ul>
 				) 

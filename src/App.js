@@ -1,18 +1,18 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import { ConnectedRouter } from 'connected-react-router'
+import { ConnectedRouter } from 'connected-react-router';
+
 import { history } from "./redux/configStore";
 import Header from "./Header"
 import Login from "./Login";
 import Signup from "./Signup";
 import  "./App.css"
 
-
 function App() {
   return (
     <div className="App">
-      <Header />
       <ConnectedRouter history={history}>
+      <Header />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
       </ConnectedRouter>

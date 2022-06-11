@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from "styled-components";
 import { useDispatch } from 'react-redux';
 import { emailCheck } from './shared/common';
-import { signUpFB } from "./redux/modules/user"
+import { idDoubleCheckFB, signUpFB } from "./redux/modules/user"
 
 const Signup = () => {
 	const [id, setId] = useState("");
@@ -35,7 +35,8 @@ const Signup = () => {
       window.alert("아이디를 입력해주세요!");
       return;
     }
-		
+
+		dispatch(idDoubleCheckFB(id));
 	}
 
 	return (

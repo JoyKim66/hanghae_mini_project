@@ -15,18 +15,23 @@ const getUser = (user) => ({type: GET_USER, user});
 // 회원가입 middleware
 export const signUpFB = (payload) => {
 	return function (dispatch, getState, { history }) {
-		axios.post("/db.json", {
+		console.log(dispatch)
+		console.log(getState)
+		axios.post("http://localhost:5001/user/signup", {
 			userId: payload.userId,
 			password: payload.password,
 			userName: payload.userName,
 		})
 		.then((res) => {
-			window.alert("회원가입이 완료되었습니다!");
-			history.replace("/login");
+			console.log(res.data)
+			if(res.data){
+				window.alert("회원가입이 완료되었습니다!");
+				history.replace("/");
+			} 
 		})
 		.catch((err) => {
 			window.alert("중복된 아이디가 존재합니다.");
-			console.log(err.response.data.errorMessage);
+			console.log(err);
 		});
 	}
 }
@@ -34,12 +39,19 @@ export const signUpFB = (payload) => {
 // 아이디 중복 검사 middleware
 export const idDoubleCheckFB = (userId) => {
 	return function (dispatch, getState, {history}){
-		axios.post("/db.json", {
+		axios.post("http://localhost:5001/user/signup/useridCheck", {
 			userid: userId
 		})
 		.then((res) => {
-			console.log(res)
+			if(res.data.result){
+				window.alert("중복되는 아이디 입니다.");
+			} else {
+				window.alert("사용가능한 아이디 입니다.");
+			}
 		})
+		.catch((err) => {
+			console.log(err);
+		});
 	}
 }
 
