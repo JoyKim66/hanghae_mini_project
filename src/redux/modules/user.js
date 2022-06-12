@@ -58,12 +58,12 @@ export const idDoubleCheckFB = (userId) => {
 // 로그인 middleware
 export const loginFB = (userId, password) => {
 	return function (dispatch, getState, {history}){
-		axios.post("/db.json", {
+		axios.post("http://localhost:5001/user/login", {
 			userid: userId,
 			password: password,
 		})
 		.then((res) => {
-			const token = res.token;
+			const token = res.data.accessToken;
 			localStorageSet("jwtToken", token);
 			dispatch(
 				logIn({
@@ -71,16 +71,43 @@ export const loginFB = (userId, password) => {
 					userId: userId
 				})
 			);
+			window.alert("로그인 되었습니다.");
+			history.replace("/");
 		})
+		.catch((error) => {
+			window.alert("아이디와 비밀번호를 다시한번 확인해주세요.");
+			console.log("Login Error", error);
+		});
 	}
 }
+
+// 로그인 중복 검사 middleware
+export const loginCheck = () => {
+	return function (dispatch, getState, {history}){
+		axios.get("http://localhost:5001/user/loginCheck")
+		.then((res) => {
+			console.log(res)
+			if(res.data.result){
+				return
+			} else {
+				window.alert("다시 로그인 해주세요");
+				history.replace("/login");
+			}
+		})
+	}
+};
 
 // 로그아웃 middleware
 export const logoutFB = () => {
 	return function (dispatch, getState, {history}) {
-		localStorageRemove("jwtToken");
-		dispatch(logOut());
-		history.replace("/");
+		axios.get("http://localhost:5001/user/logout")
+		.then((res) => {
+			console.log(res)
+			localStorageRemove("jwtToken");
+			dispatch(logOut());
+			window.alert(res.data.result)
+			history.replace("/login");
+		})
 	}
 }
 
@@ -97,8 +124,16 @@ const initialState = {
 const handleUser = (state = initialState, action = {}) => {
 	switch(action.type) {
 		case LOG_IN: {
-			console.log("유저정보 ", state);
 			return {...state, user: action.user, is_login: true};
+		}
+
+		case LOG_OUT: {
+			localStorageRemove("jwtToken");
+			return {...state, user: action.user, is_login: false};
+		}
+
+		case GET_USER: {
+			return state;
 		}
 
 		default : 

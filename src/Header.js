@@ -1,20 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components"
 import { useHistory } from "react-router-dom";
+import { localStorageGet } from "./shared/localStorage";
+import { logoutFB } from "./redux/modules/user";
+import { useDispatch } from "react-redux";
+
+const token = localStorageGet("jwtToken")
 
 const Header = () => {
-	const [token, settoken] = useState(false);
+	const [useToken, setUseToken] = useState(token);
 	const history = useHistory();
+	const dispatch = useDispatch();
+
+	const logout = () => {
+		setUseToken(!useToken)
+		dispatch(logoutFB());
+	};
+
 	return (
 		<HeaderWrap>
 			<HeaderInner>
 			<h2><a href="/">홈</a></h2>
 			{
-				token 
+				useToken
 				? (
 					<ul className="userInner">
-						<li>사용자명</li>
-						<li>로그아웃</li>
+					<li>사용자명</li>
+					<li onClick={() => {
+						logout()
+					}}>로그아웃</li>
 					</ul>
 				)
 				: (

@@ -7,10 +7,10 @@ export const localStorageSet = (name, value) => {
 
 // 로컬 스토리지 해당 key 조회
 export const localStorageGet = (name) => {
-	JSON.parse(window.localStorage.getItem(name))
+ return	JSON.parse(window.localStorage.getItem(name))
 };
 
 // 로컬 스토리지 해당 key 삭제
 export const localStorageRemove = (name) => {
-	window.localStorage.removeItem(name)
+ return	window.localStorage.removeItem(name)
 };
