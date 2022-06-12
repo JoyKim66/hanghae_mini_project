@@ -15,19 +15,22 @@ const getUser = (user) => ({type: GET_USER, user});
 // 회원가입 middleware
 export const signUpFB = (payload) => {
 	return function (dispatch, getState, { history }) {
-		console.log(dispatch)
-		console.log(getState)
 		axios.post("http://localhost:5001/user/signup", {
 			userId: payload.userId,
 			password: payload.password,
 			userName: payload.userName,
 		})
 		.then((res) => {
-			console.log(res.data)
 			if(res.data){
 				window.alert("회원가입이 완료되었습니다!");
+				dispatch(
+					logIn({
+						is_login: true
+					})
+				);
 				history.replace("/");
-			} 
+			}
+			
 		})
 		.catch((err) => {
 			window.alert("중복된 아이디가 존재합니다.");
@@ -86,7 +89,6 @@ export const loginCheck = () => {
 	return function (dispatch, getState, {history}){
 		axios.get("http://localhost:5001/user/loginCheck")
 		.then((res) => {
-			console.log(res)
 			if(res.data.result){
 				return
 			} else {
@@ -102,7 +104,6 @@ export const logoutFB = () => {
 	return function (dispatch, getState, {history}) {
 		axios.get("http://localhost:5001/user/logout")
 		.then((res) => {
-			console.log(res)
 			localStorageRemove("jwtToken");
 			dispatch(logOut());
 			window.alert(res.data.result)
