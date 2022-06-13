@@ -6,10 +6,13 @@ const LOG_IN = "LOG_IN";
 const LOG_OUT = "LOG_OUT";
 const GET_USER = "GET_USER";
 
+
+
 // Action creators
 const logIn = (user) => ({type: LOG_IN, user});
 const logOut = (user) => ({type: LOG_OUT, user});
 const getUser = (user) => ({type: GET_USER, user});
+
 
 // 회원가입 middleware
 export const signUpFB = (payload) => {

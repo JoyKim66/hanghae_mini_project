@@ -9,6 +9,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 
+import { useDispatch } from 'react-redux';
+import { postAdd } from './redux/modules/post';
+
 
 
 const Input = styled('input')({
@@ -20,6 +23,11 @@ const Write = () => {
     const [coffeebeanname, setCoffeebeanName] = React.useState('');
     const [cafename, setCafename] = React.useState(null);
     const [review, setReview] = React.useState(null);
+    const [img, setImg] = React.useState(null);
+
+    //redux 
+    const dispatch = useDispatch();
+
     
     //원두배열 (store에 저장하기)
     const coffeebean_list = [
@@ -51,6 +59,7 @@ const Write = () => {
     }
     const uploadImage = (e) => {
         console.log(e.target.files[0].name);
+        setImg(e.target.files[0].name);
     }
 
     const addPost = (e) => {
@@ -58,7 +67,9 @@ const Write = () => {
         console.log(cafename);
         console.log(review);
         console.log(coffeebeanname);
-        console.log();
+        console.log(img);
+        
+        dispatch(postAdd({img,cafename,review,coffeebeanname}))
     }
 
     return (
