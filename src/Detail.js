@@ -3,25 +3,35 @@ import styled from "styled-components";
 
 import Comment from './Comment';
 
+import { useSelector } from "react-redux";
+import { useParams,useHistory } from 'react-router-dom';
+
+
 
 
 const Detail = () => {
+    const post_list = useSelector((state) => state.post.list);
+    const post_idx = useParams().idx;
+    const post_data = post_list[post_idx];
+    const history = useHistory();
     return (
         <div>
         <Container>
-            <ImageBox>이미지부분</ImageBox>
+            <ImageBox>이미지부분{post_data.img}</ImageBox>
             <TextBox>
-                <NameBox>카페이름
+                <NameBox>{post_data.cafename}
                 <div><hr style={{width:"100%"}}/></div>
                 </NameBox>
-                <CategoryBox>원두이름:</CategoryBox>
+                <CategoryBox>원두이름:{post_data.coffeebeanname}</CategoryBox>
                 <ReviewBox>
                     <div>
                         <Review>
-                            리뷰내용
+                            {post_data.review}
                         </Review>
                         <ButtonBox>
-                            <Button>수정</Button>
+                            <Button onClick={()=> {
+                                history.push("/write/"+post_idx)
+                            }}>수정</Button>
                             <Button>삭제</Button>
                         </ButtonBox>
                         
