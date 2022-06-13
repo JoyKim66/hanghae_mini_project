@@ -2,47 +2,50 @@ import { useState } from "react";
 import styled from "styled-components"
 import { useHistory } from "react-router-dom";
 import { localStorageGet } from "./shared/localStorage";
-import { logoutFB } from "./redux/modules/user";
 import { useDispatch, useSelector } from "react-redux";
+import { logoutFB } from "./redux/modules/user";
+import { getCookie } from "./shared/cookie";
 
 const token = localStorageGet("jwtToken");
+const is_login = getCookie("is_login");
+const nickname = getCookie("nickname");
 
 const Header = () => {
-	const [useToken, setUseToken] = useState(token);
 	const history = useHistory();
-	const select = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
 	const logout = () => {
-		setUseToken(!useToken)
 		dispatch(logoutFB());
 	};
+
+	if(is_login && token){
+		return (
+			<HeaderWrap>
+				<HeaderInner>
+				<h2><a href="/">홈</a></h2>
+				<ul className="userInner">
+					<li>{nickname}</li>
+					<li onClick={() => {
+							logout()
+						}}>로그아웃</li>
+				</ul>
+				</HeaderInner>
+			</HeaderWrap>
+		)
+	}
 
 	return (
 		<HeaderWrap>
 			<HeaderInner>
 			<h2><a href="/">홈</a></h2>
-			{
-				!select.is_login && !token
-				? (
-					<ul className="userInner">
-						<li onClick={() => {
-							history.push("/login")
-						}}>로그인</li>
-						<li onClick={() => {
-							history.push("/signup")
-						}}> 회원가입</li>
-					</ul>
-				)
-				: (
-					<ul className="userInner">
-						<li>사용자명</li>
-						<li onClick={() => {
-							logout()
-						}}>로그아웃</li>
-					</ul>
-				) 
-			}
+				<ul className="userInner">
+					<li onClick={() => {
+						history.push("/login")
+					}}>로그인</li>
+					<li onClick={() => {
+						history.push("/signup")
+					}}>회원가입</li>
+				</ul>
 			</HeaderInner>
 		</HeaderWrap>
 	);
@@ -64,7 +67,7 @@ const HeaderInner = styled.div`
 
 	& .userInner {
 		display: flex;
-		& li {margin: 0 20px}
+		& li {margin: 0 20px; cursor: pointer;}
 		& li:last-child {margin: 0}
 	}
 `

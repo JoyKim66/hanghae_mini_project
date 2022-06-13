@@ -40,7 +40,6 @@ const Signup = () => {
       return;
     }
 
-
 		if( !id_check ){
 			window.alert("중복 확인 버튼을 눌러주세요");
       return;

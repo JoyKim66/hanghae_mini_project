@@ -1,6 +1,8 @@
 
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 import { localStorageRemove, localStorageSet } from "../../shared/localStorage";
+import { setCookie, getCookie, deleteCookie } from "../../shared/cookie";
 
 // Actions Type
 const LOG_IN = "LOG_IN";
@@ -70,11 +72,16 @@ export const loginFB = (userId, password) => {
 		})
 		.then((res) => {
 			const token = res.data.accessToken;
+			//받아온 토큰 속에서 유저네임 찾아내기!
+			const DecodedToken = jwtDecode(token);
 			localStorageSet("jwtToken", token);
+			setCookie("userId", userId);
+			setCookie("nickname", DecodedToken.nickname);
 			dispatch(
 				logIn({
 					is_login: true,
-					userId: userId
+					userId: userId,
+					nickname: DecodedToken.nickname,
 				})
 			);
 			window.alert("로그인 되었습니다.");
@@ -92,11 +99,9 @@ export const loginCheck = () => {
 	return function (dispatch, getState, {history}){
 		axios.get("http://13.209.43.69/user/login/check")
 		.then((res) => {
-			console.log(res)
-			if(res){
+			if(res.data === ""){
 				history.replace("/");
-			} else {
-				return
+				window.alert("이미 로그인되었습니다!");
 			}
 		})
 	}
@@ -113,9 +118,9 @@ export const logoutFB = () => {
 
 // initialState
 const initialState = {
-	userInfo: {
+	user: {
     userId: "",
-    userName: "",
+    nickname: ""
   },
   is_login: false,
 }
@@ -124,6 +129,7 @@ const initialState = {
 const handleUser = (state = initialState, action = {}) => {
 	switch(action.type) {
 		case LOG_IN: {
+			setCookie("is_login", "success");
 			return {...state, user: action.user, is_login: true};
 		}
 
