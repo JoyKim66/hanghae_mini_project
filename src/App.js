@@ -19,9 +19,8 @@ function App() {
       <ConnectedRouter history={history}>
         <Route path="/login" exact component={Login} />
         <Route path="/" exact component={Main} />
-        <Route path="/detail/:idx" exact component={Detail} />
+        <Route path="/detail" exact component={Detail} />
         <Route path="/write" exact component={Write} />
-        <Route path="/write/:idx" exact component={Write} />
         <Route path="/signup" exact component={Signup} />
       </ConnectedRouter>
     </div>
