@@ -15,6 +15,7 @@ export const postLoad = (post_data) => {
 }
 
 
+
 //미들웨어
 export const getPostList =() => {
     return async function(dispatch){
@@ -27,7 +28,7 @@ export const postPostList = (data) => {
     return async function(dispatch){
         console.log("data",data);
         const formData = new FormData();
-        // formData.append("img",data.img);
+        formData.append("img",data.img);
         formData.append(
             "post_data",
             new Blob([JSON.stringify(data.post_data)], {

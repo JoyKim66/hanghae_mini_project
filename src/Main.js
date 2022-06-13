@@ -61,9 +61,9 @@ function Main() {
         <ImageListItem key="Subheader" cols={2}>
         </ImageListItem>
         {post_list.map((item,idx) => (
-            <ImageListItem key={idx}
+            <ImageListItem key={item.id}
             onClick={()=>{
-              history.push("/detail/"+idx);
+              history.push("/detail/"+item.id);
             }}> 
             <img
                 src={`${item.img}?w=248&fit=crop&auto=format`}

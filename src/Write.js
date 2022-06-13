@@ -25,7 +25,7 @@ const Write = () => {
     //state관리
     const [coffeebeanname, setCoffeebeanName] = React.useState('');
     const [cafename, setCafename] = React.useState(null);
-    const [review, setReview] = React.useState(null);
+    const [cafereview, setCafeReview] = React.useState(null);
     const [img, setImg] = React.useState(null);
 
     //redux 
@@ -55,7 +55,7 @@ const Write = () => {
 
     const handleReviweChange = (e) => {
         // console.log(e.target.value);
-        setReview(e.target.value);
+        setCafeReview(e.target.value);
     };
     const handleNameChange = (e) => {
         // console.log(e.target.value);
@@ -71,7 +71,7 @@ const Write = () => {
         e.preventDefault();
 
         const data = {
-            post_data: {cafename,review,coffeebeanname},img
+            post_data: {cafename,cafereview,coffeebeanname},img
         }
         dispatch(postPostList(data));
         

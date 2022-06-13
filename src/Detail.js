@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from 'axios';
 import styled from "styled-components";
 
 import Comment from './Comment';
@@ -8,29 +9,36 @@ import { useParams,useHistory } from 'react-router-dom';
 
 
 
-
 const Detail = () => {
     const post_list = useSelector((state) => state.post.list);
-    const post_idx = useParams().idx;
-    const post_data = post_list[post_idx];
+    const post_id = useParams().id;
     const history = useHistory();
+    const [getData,setGetData] = React.useState(null);
+    console.log("post_id: ",post_id);
+
+    React.useEffect(()=>{
+        axios.get(`http://localhost:5001/cafe_list/${post_id}`)
+        .then(response=> {
+            console.log('respose: ',response.data);
+            setGetData(response.data);
+        })},[])
     return (
         <div>
         <Container>
-            <ImageBox>이미지부분{post_data.img}</ImageBox>
+            <ImageBox>이미지부분{getData?.data.imgUrl}</ImageBox>
             <TextBox>
-                <NameBox>{post_data.cafename}
+                <NameBox>{getData?.data.post_data.cafename}
                 <div><hr style={{width:"100%"}}/></div>
                 </NameBox>
-                <CategoryBox>원두이름:{post_data.coffeebeanname}</CategoryBox>
+                <CategoryBox>원두이름:{getData?.data.post_data.coffeebeanname}</CategoryBox>
                 <ReviewBox>
                     <div>
                         <Review>
-                            {post_data.review}
+                            {getData?.data.post_data.cafereview}
                         </Review>
                         <ButtonBox>
                             <Button onClick={()=> {
-                                history.push("/write/"+post_idx)
+                                history.push("/write/"+post_id)
                             }}>수정</Button>
                             <Button>삭제</Button>
                         </ButtonBox>
