@@ -5,20 +5,20 @@ import { localStorageRemove, localStorageSet } from "../../shared/localStorage";
 // Actions Type
 const LOG_IN = "LOG_IN";
 const LOG_OUT = "LOG_OUT";
-const GET_USER = "GET_USER";
+const GET_ID = "GET_ID";
 
 // Action creators
 const logIn = (user) => ({type: LOG_IN, user});
 const logOut = (user) => ({type: LOG_OUT, user});
-const getUser = (user) => ({type: GET_USER, user});
+const getId = (user) => ({type: GET_ID, user});
 
 // 회원가입 middleware
 export const signUpFB = (payload) => {
 	return function (dispatch, getState, { history }) {
-		axios.post("http://localhost:5001/user/signup", {
-			userId: payload.userId,
+		axios.post("http://13.209.43.69/user/signup", {
+			userid: payload.userid,
 			password: payload.password,
-			userName: payload.userName,
+			nickname: payload.nickname,
 		})
 		.then((res) => {
 			if(res.data){
@@ -30,11 +30,9 @@ export const signUpFB = (payload) => {
 				);
 				history.replace("/");
 			}
-			
 		})
 		.catch((err) => {
-			window.alert("중복된 아이디가 존재합니다.");
-			console.log(err);
+			window.alert("회원가입에 실패했습니다!");
 		});
 	}
 }
@@ -42,15 +40,20 @@ export const signUpFB = (payload) => {
 // 아이디 중복 검사 middleware
 export const idDoubleCheckFB = (userId) => {
 	return function (dispatch, getState, {history}){
-		axios.post("http://localhost:5001/user/signup/useridCheck", {
+		axios.post("http://13.209.43.69/user/signup/useridCheck", {
 			userid: userId
 		})
 		.then((res) => {
-			if(res.data.result){
-				window.alert("중복되는 아이디 입니다.");
-			} else {
+			if(res.data){
 				window.alert("사용가능한 아이디 입니다.");
+			} else {
+				window.alert("중복되는 아이디 입니다.");
 			}
+			dispatch(
+				getId({
+					is_double_check: res.data
+				})
+			)
 		})
 		.catch((err) => {
 			console.log(err);
@@ -61,7 +64,7 @@ export const idDoubleCheckFB = (userId) => {
 // 로그인 middleware
 export const loginFB = (userId, password) => {
 	return function (dispatch, getState, {history}){
-		axios.post("http://localhost:5001/user/login", {
+		axios.post("http://13.209.43.69/user/login", {
 			userid: userId,
 			password: password,
 		})
@@ -87,13 +90,13 @@ export const loginFB = (userId, password) => {
 // 로그인 중복 검사 middleware
 export const loginCheck = () => {
 	return function (dispatch, getState, {history}){
-		axios.get("http://localhost:5001/user/loginCheck")
+		axios.get("http://13.209.43.69/user/login/check")
 		.then((res) => {
-			if(res.data.result){
-				return
+			console.log(res)
+			if(res){
+				history.replace("/");
 			} else {
-				window.alert("다시 로그인 해주세요");
-				history.replace("/login");
+				return
 			}
 		})
 	}
@@ -102,13 +105,9 @@ export const loginCheck = () => {
 // 로그아웃 middleware
 export const logoutFB = () => {
 	return function (dispatch, getState, {history}) {
-		axios.get("http://localhost:5001/user/logout")
-		.then((res) => {
-			localStorageRemove("jwtToken");
-			dispatch(logOut());
-			window.alert(res.data.result)
-			history.replace("/login");
-		})
+		localStorageRemove("jwtToken");
+		dispatch(logOut());
+		window.alert("로그아웃 되었습니다.")
 	}
 }
 
@@ -133,8 +132,8 @@ const handleUser = (state = initialState, action = {}) => {
 			return {...state, user: action.user, is_login: false};
 		}
 
-		case GET_USER: {
-			return state;
+		case GET_ID: {
+			return {...state, is_double_check: true};
 		}
 
 		default : 

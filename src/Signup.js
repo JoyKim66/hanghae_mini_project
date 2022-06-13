@@ -1,43 +1,58 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { emailCheck } from './shared/common';
-import { idDoubleCheckFB, signUpFB } from "./redux/modules/user"
+import { idDoubleCheckFB, loginCheck, signUpFB } from "./redux/modules/user"
+import { localStorageGet } from './shared/localStorage';
+
+const token = localStorageGet("jwtToken");
 
 const Signup = () => {
-	const [id, setId] = useState("");
-	const [pwd, setPwd] = useState("");
+	const [userid, setId] = useState("");
+	const [password, setPwd] = useState("");
 	const [pwd_check, setPwdCheck] = useState("");
-	const [user_name, setUserName] = useState("");
+	const [nickname, setUserName] = useState("");
 	const dispatch = useDispatch();
-
-	const signupFu = () => {
-		if (!id || !pwd || !user_name) {
-      window.alert("아이디, 패스워드, 닉네임을 모두 입력해주세요!");
-      return;
-    }
-
-    if(!emailCheck(id)){
-      window.alert('이메일 형식이 맞지 않습니다!');
-      return;
-    }
-
-		if (pwd !== pwd_check) {
-      window.alert("패스워드와 패스워드 확인이 일치하지 않습니다!");
-      return;
-    }
-		const new_obj = {id, pwd, user_name}
-		dispatch(signUpFB(new_obj))
-  }
+	const id_check = useSelector((state) => state.user.is_double_check);
 
 	const idDoubleCheck = () => {
-		if (!id) {
+		if (!userid) {
       window.alert("아이디를 입력해주세요!");
       return;
     }
 
-		dispatch(idDoubleCheckFB(id));
+		dispatch(idDoubleCheckFB(userid));
 	}
+
+	const signupFu = () => {
+		if (!userid || !password || !nickname) {
+      window.alert("아이디, 패스워드, 닉네임을 모두 입력해주세요!");
+      return;
+    }
+
+    if(!emailCheck(userid)){
+      window.alert('이메일 형식이 맞지 않습니다!');
+      return;
+    }
+
+		if (password !== pwd_check) {
+      window.alert("패스워드와 패스워드 확인이 일치하지 않습니다!");
+      return;
+    }
+
+
+		if( !id_check ){
+			window.alert("중복 확인 버튼을 눌러주세요");
+      return;
+		}
+
+		const new_obj = {userid, password, nickname}
+		dispatch(signUpFB(new_obj))
+  }
+
+	useEffect(() => {
+		token && dispatch(loginCheck());
+	},[])
 
 	return (
 		<SignupInner>

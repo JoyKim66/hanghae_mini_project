@@ -23,16 +23,8 @@ const Header = () => {
 			<HeaderInner>
 			<h2><a href="/">홈</a></h2>
 			{
-				select.is_login
+				!select.is_login && !token
 				? (
-					<ul className="userInner">
-					<li>사용자명</li>
-					<li onClick={() => {
-						logout()
-					}}>로그아웃</li>
-					</ul>
-				)
-				: (
 					<ul className="userInner">
 						<li onClick={() => {
 							history.push("/login")
@@ -40,6 +32,14 @@ const Header = () => {
 						<li onClick={() => {
 							history.push("/signup")
 						}}> 회원가입</li>
+					</ul>
+				)
+				: (
+					<ul className="userInner">
+						<li>사용자명</li>
+						<li onClick={() => {
+							logout()
+						}}>로그아웃</li>
 					</ul>
 				) 
 			}
