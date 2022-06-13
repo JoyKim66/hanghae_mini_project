@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components"
 import { useDispatch } from 'react-redux';
-import { loginCheck, loginFB } from "./redux/modules/user"
+import { loginFB } from "./redux/modules/user"
 import { emailCheck } from './shared/common';
-import { localStorageGet } from "./shared/localStorage";
-
-const token = localStorageGet("jwtToken");
 
 const Login = () => {
 	const [userId, setId] = useState("");
@@ -25,10 +22,6 @@ const Login = () => {
 
     dispatch(loginFB(userId, password));
   };
-
-	useEffect(() => {
-		token && dispatch(loginCheck());
-	},[])
 	
 	return (
 		<LoginInner>

@@ -94,19 +94,6 @@ export const loginFB = (userId, password) => {
 	}
 }
 
-// 로그인 중복 검사 middleware
-export const loginCheck = () => {
-	return function (dispatch, getState, {history}){
-		axios.get("http://13.209.43.69/user/login/check")
-		.then((res) => {
-			if(res.data === ""){
-				history.replace("/");
-				window.alert("이미 로그인되었습니다!");
-			}
-		})
-	}
-};
-
 // 로그아웃 middleware
 export const logoutFB = () => {
 	return function (dispatch, getState, {history}) {
@@ -129,7 +116,6 @@ const initialState = {
 const handleUser = (state = initialState, action = {}) => {
 	switch(action.type) {
 		case LOG_IN: {
-			setCookie("is_login", "success");
 			return {...state, user: action.user, is_login: true};
 		}
 

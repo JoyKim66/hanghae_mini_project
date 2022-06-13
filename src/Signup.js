@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
 import { emailCheck } from './shared/common';
-import { idDoubleCheckFB, loginCheck, signUpFB } from "./redux/modules/user"
+import { idDoubleCheckFB, signUpFB } from "./redux/modules/user"
 import { localStorageGet } from './shared/localStorage';
 
 const token = localStorageGet("jwtToken");
@@ -48,10 +48,6 @@ const Signup = () => {
 		const new_obj = {userid, password, nickname}
 		dispatch(signUpFB(new_obj))
   }
-
-	useEffect(() => {
-		token && dispatch(loginCheck());
-	},[])
 
 	return (
 		<SignupInner>
