@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import { useDispatch } from 'react-redux';
 import {useHistory} from "react-router-dom";
 
-import { postAdd } from './redux/modules/post';
+import { postAdd, postPostList } from './redux/modules/post';
 
 
 
@@ -63,21 +63,22 @@ const Write = () => {
         
     }
     const uploadImage = (e) => {
-        console.log(e.target.files[0].name);
+        // console.log(e.target.files[0].name);
         setImg(e.target.files[0].name);
     }
 
     const addPost = (e) => {
-        //리덕스에 저장하기
-        console.log(cafename);
-        console.log(review);
-        console.log(coffeebeanname);
-        console.log(img);
+        e.preventDefault();
+
+        const data = {
+            post_data: {cafename,review,coffeebeanname},img
+        }
+        dispatch(postPostList(data));
         
-        
-        dispatch(postAdd({img,cafename,review,coffeebeanname}));
+        // dispatch(postAdd({
+        //     post_data: {cafename,review,coffeebeanname},img
+        // }));
         history.push("/");
-        
     }
 
     return (

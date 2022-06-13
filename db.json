@@ -26,7 +26,23 @@
       "cafereview": "카페리뷰",
       "userid": "email@naver.com",
       "nickname": "닉네임"
+    },
+    {
+      "data": {
+        "post_data": {
+          "cafename": "테스트",
+          "review": "터ㅔ스트",
+          "coffeebeanname": "콜롬비아"
+        },
+        "img": "bboshi.jpg"
+      },
+      "id": 4
+    },
+    {
+      "id": 5
+    },
+    {
+      "id": 6
     }
-    
   ]
 }

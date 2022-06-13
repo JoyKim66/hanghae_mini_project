@@ -18,13 +18,35 @@ export const postLoad = (post_data) => {
 //미들웨어
 export const getPostList =() => {
     return async function(dispatch){
-        console.log("ddd")
         axios.get("http://localhost:5001/cafe_list")
         .then(response => {
-            console.log('respose',response.data);
+            console.log('respose: ',response.data);
             dispatch(postLoad(response.data))})}
-            
     }
+export const postPostList = (data) => {
+    return async function(dispatch){
+        console.log("data",data);
+        const formData = new FormData();
+        // formData.append("img",data.img);
+        formData.append(
+            "post_data",
+            new Blob([JSON.stringify(data.post_data)], {
+                type:"application/json"
+            })
+        );
+        await axios({
+        method: "post",
+        url: "http://localhost:5001/cafe_list",
+        data: formData,
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+        }).then((response)=> {
+            console.log('post_response: ',response.data);
+            dispatch(postAdd(response.data));
+        })
+    }
+}
 
 
 export default function reducer(state=initialState,action={}){
