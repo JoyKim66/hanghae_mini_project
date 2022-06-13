@@ -10,7 +10,10 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 
 import { useDispatch } from 'react-redux';
+import {useHistory} from "react-router-dom";
+
 import { postAdd } from './redux/modules/post';
+
 
 
 
@@ -27,6 +30,8 @@ const Write = () => {
 
     //redux 
     const dispatch = useDispatch();
+
+    const history = useHistory();
 
     
     //원두배열 (store에 저장하기)
@@ -69,7 +74,10 @@ const Write = () => {
         console.log(coffeebeanname);
         console.log(img);
         
-        dispatch(postAdd({img,cafename,review,coffeebeanname}))
+        
+        dispatch(postAdd({img,cafename,review,coffeebeanname}));
+        history.push("/");
+        
     }
 
     return (

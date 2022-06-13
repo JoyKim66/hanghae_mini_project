@@ -1,0 +1,32 @@
+{
+  "cafe_list": [
+    {
+      "id": 3,
+      "coffeebeanname": "원두이름",
+      "cafename": "카페이름",
+      "imageUrl": "/images/cancle.png",
+      "cafereview": "카페리뷰",
+      "userid": "email@naver.com",
+      "nickname": "닉네임"
+    },
+    {
+      "id": 2,
+      "coffeebeanname": "원두이름",
+      "cafename": "어덜트온리",
+      "imageUrl": "/images/cancle.png",
+      "cafereview": "카페리뷰",
+      "userid": "email@naver.com",
+      "nickname": "닉네임"
+    },
+    {
+      "id": 1,
+      "coffeebeanname": "원두이름",
+      "cafename": "고양멍멍",
+      "imageUrl": "/images/cancle.png",
+      "cafereview": "카페리뷰",
+      "userid": "email@naver.com",
+      "nickname": "닉네임"
+    }
+    
+  ]
+}

@@ -1,12 +1,31 @@
-const ADD = "post/ADD";
+import axios from 'axios';
 
+
+const ADD = "post/ADD";
+const LOAD = "post/LOAD";
 
 const initialState = {list:[]};
 
-
+//액션
 export const postAdd = (post_data) => {
     return {type: ADD, post_data}
 }
+export const postLoad = (post_data) => {
+    return {type: LOAD, post_data}
+}
+
+
+//미들웨어
+export const getPostList =() => {
+    return async function(dispatch){
+        console.log("ddd")
+        axios.get("http://localhost:5001/cafe_list")
+        .then(response => {
+            console.log('respose',response.data);
+            dispatch(postLoad(response.data))})}
+            
+    }
+
 
 export default function reducer(state=initialState,action={}){
     switch(action.type) {
@@ -18,12 +37,15 @@ export default function reducer(state=initialState,action={}){
                 review: action.post_data.review,
                 coffeebeanname: action.post_data.coffeebeanname,
             }]
-            // console.log({list:new_post_obj});
+            console.log({list:new_post_obj});
             return {list:new_post_obj};
         }
+        case "post/LOAD" : {
+            // console.log(action);
+            return {list: action.post_data};
+        } 
         default:
         return state;
     }
-    
 }
     
