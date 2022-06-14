@@ -9,6 +9,12 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 
+import { useDispatch } from 'react-redux';
+import {useHistory} from "react-router-dom";
+
+import { postAdd, postPostList } from './redux/modules/post';
+
+
 
 
 const Input = styled('input')({
@@ -19,7 +25,14 @@ const Write = () => {
     //state관리
     const [coffeebeanname, setCoffeebeanName] = React.useState('');
     const [cafename, setCafename] = React.useState(null);
-    const [review, setReview] = React.useState(null);
+    const [cafereview, setCafeReview] = React.useState(null);
+    const [img, setImg] = React.useState(null);
+
+    //redux 
+    const dispatch = useDispatch();
+
+    const history = useHistory();
+
     
     //원두배열 (store에 저장하기)
     const coffeebean_list = [
@@ -42,7 +55,7 @@ const Write = () => {
 
     const handleReviweChange = (e) => {
         // console.log(e.target.value);
-        setReview(e.target.value);
+        setCafeReview(e.target.value);
     };
     const handleNameChange = (e) => {
         // console.log(e.target.value);
@@ -50,15 +63,22 @@ const Write = () => {
         
     }
     const uploadImage = (e) => {
-        console.log(e.target.files[0].name);
+        // console.log(e.target.files[0].name);
+        setImg(e.target.files[0].name);
     }
 
     const addPost = (e) => {
-        //리덕스에 저장하기
-        console.log(cafename);
-        console.log(review);
-        console.log(coffeebeanname);
-        console.log();
+        e.preventDefault();
+
+        const data = {
+            post_data: {cafename,cafereview,coffeebeanname},img
+        }
+        dispatch(postPostList(data));
+        
+        // dispatch(postAdd({
+        //     post_data: {cafename,review,coffeebeanname},img
+        // }));
+        history.push("/");
     }
 
     return (
