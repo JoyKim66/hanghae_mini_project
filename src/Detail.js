@@ -1,24 +1,44 @@
 import * as React from 'react';
+import axios from 'axios';
 import styled from "styled-components";
+
+import Comment from './Comment';
+
+import { useSelector } from "react-redux";
+import { useParams,useHistory } from 'react-router-dom';
 
 
 
 const Detail = () => {
+    const post_id = useParams().id;
+    const history = useHistory();
+    const [getData,setGetData] = React.useState(null);
+    console.log("post_id: ",post_id);
+
+    React.useEffect(()=>{
+        axios.get(`http://localhost:5001/cafe_list/${post_id}`)
+        .then(response=> {
+            console.log('respose: ',response.data);
+            setGetData(response.data);
+        })},[])
     return (
+        <div>
         <Container>
-            <ImageBox>이미지부분</ImageBox>
+            <ImageBox>이미지부분{getData?.data.imgUrl}</ImageBox>
             <TextBox>
-                <NameBox>카페이름
+                <NameBox>{getData?.data.post_data.cafename}
                 <div><hr style={{width:"100%"}}/></div>
                 </NameBox>
-                <CategoryBox>원두이름:</CategoryBox>
+                <CategoryBox>원두이름:{getData?.data.post_data.coffeebeanname}</CategoryBox>
                 <ReviewBox>
                     <div>
                         <Review>
-                            리뷰내용
+                            {getData?.data.post_data.cafereview}
                         </Review>
                         <ButtonBox>
-                            <Button>수정</Button>
+                            <Button onClick={()=> {
+                                history.push("/write/"+post_id)
+                            }}>수정</Button>
                             <Button>삭제</Button>
                         </ButtonBox>
                         
@@ -26,6 +46,8 @@ const Detail = () => {
                 </ReviewBox>
             </TextBox>
         </Container>
+        <Comment/>
+    </div>
     )
 }
 

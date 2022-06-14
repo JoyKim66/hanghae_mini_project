@@ -1,0 +1,92 @@
+{
+  "cafe_list": [
+    {
+      "data": {
+        "post_data": {
+          "cafename": "테스트",
+          "cafereview": "터ㅔ스트",
+          "coffeebeanname": "콜롬비아"
+        },
+        "imgUrl": "bboshi.jpg"
+      },
+      "id": 1
+    },
+    {
+      "data": {
+        "post_data": {
+          "cafename": "테스트",
+          "cafereview": "터ㅔ스트",
+          "coffeebeanname": "콜롬비아"
+        },
+        "imgUrl": "bboshi.jpg"
+      },
+      "id": 2
+    },
+    {
+      "data": {
+        "post_data": {
+          "cafename": "테스트",
+          "cafereview": "터ㅔ스트",
+          "coffeebeanname": "콜롬비아"
+        },
+        "imgUrl": "bboshi.jpg"
+      },
+      "id": 3
+    },
+    {
+      "data": {
+        "post_data": {
+          "cafename": "테스트",
+          "cafereview": "터ㅔ스트",
+          "coffeebeanname": "콜롬비아"
+        },
+        "imgUrl": "bboshi.jpg"
+      },
+      "id": 4
+    }
+  ],
+  "reply": [
+    {
+      "id": 3,
+      "nickname": "닉네임1",
+      "reply": "댓글내용1"
+    },
+    {
+      "id": 2,
+      "nickname": "닉네임",
+      "reply": "댓글내용2"
+    },
+    {
+      "id": 1,
+      "nickname": "닉네임",
+      "reply": "댓글내용3"
+    },
+    {
+      "reply": "댓글내용4",
+      "nickname": "닉네임",
+      "id": 4
+    },
+    {
+      "reply": "댓글내용5",
+      "nickname": "닉네임",
+      "id": 5
+    },
+    {
+      "reply": "댓글",
+      "nickname": "닉네임",
+      "id": 6
+    },
+    {
+      "reply": "먀먀먀",
+      "id": 7
+    },
+    {
+      "reply": "먀먀",
+      "id": 8
+    },
+    {
+      "reply": "ㅇㅇㅇ",
+      "id": 9
+    }
+  ]
+}
