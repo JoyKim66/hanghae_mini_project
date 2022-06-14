@@ -7,10 +7,10 @@ import { localStorageRemove, localStorageSet } from "../../shared/localStorage";
 import { setCookie } from "../../shared/cookie";
 
 // Actions Type
+const IP = "http://3.38.107.48"
 const LOG_IN = "LOG_IN";
 const LOG_OUT = "LOG_OUT";
 const GET_ID = "GET_ID";
-
 
 // Action creators
 const logIn = createAction(LOG_IN, (user) => ({ user }));
@@ -26,7 +26,7 @@ const getId = createAction(GET_ID, (user) => ({ user }));
 // 회원가입 middleware
 export const signUpFB = (payload) => {
 	return function (dispatch, getState, { history }) {
-		axios.post("http://13.209.43.69/user/signup", {
+		axios.post(`${IP}/user/signup`, {
 			userid: payload.userid,
 			password: payload.password,
 			nickname: payload.nickname,
@@ -46,7 +46,7 @@ export const signUpFB = (payload) => {
 // 아이디 중복 검사 middleware
 export const idDoubleCheckFB = (userId) => {
 	return function (dispatch, getState, {history}){
-		axios.post("http://13.209.43.69/user/signup/useridCheck", {
+		axios.post(`${IP}/user/signup/useridCheck`, {
 			userid: userId
 		})
 		.then((res) => {
@@ -70,7 +70,7 @@ export const idDoubleCheckFB = (userId) => {
 // 로그인 middleware
 export const loginFB = (userId, password) => {
 	return function (dispatch, getState, {history}){
-		axios.post("http://13.209.43.69/user/login", {
+		axios.post(`${IP}/user/login`, {
 			userid: userId,
 			password: password,
 		})
@@ -133,7 +133,10 @@ export default handleActions(
         draft.is_login = false;
       }),
 
-		[GET_ID]: (state, action) => produce(state, (draft) => {}),
+		[GET_ID]: (state, action) => 
+			produce(state, (draft) => {
+				draft.is_double_check = true
+			}),
 	},
 	initialState
 )

@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
 import { emailCheck } from './shared/common';
 import { idDoubleCheckFB, signUpFB } from "./redux/modules/user"
-import { localStorageGet } from './shared/localStorage';
-
-const token = localStorageGet("jwtToken");
 
 const Signup = () => {
 	const [userid, setId] = useState("");
@@ -18,6 +15,11 @@ const Signup = () => {
 	const idDoubleCheck = () => {
 		if (!userid) {
       window.alert("아이디를 입력해주세요!");
+      return;
+    }
+
+		if(!emailCheck(userid)){
+      window.alert('이메일 형식이 맞지 않습니다!');
       return;
     }
 
