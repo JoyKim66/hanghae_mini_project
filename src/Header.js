@@ -11,7 +11,7 @@ const Header = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const is_login = useSelector((state) => state.user);
-
+	console.log(is_login)
 	const logout = () => {
 		dispatch(logoutFB());
 	};

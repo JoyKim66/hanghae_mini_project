@@ -1,6 +1,8 @@
 
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { createAction, handleActions } from "redux-actions";
+import { produce } from "immer";
 import { localStorageRemove, localStorageSet } from "../../shared/localStorage";
 import { setCookie } from "../../shared/cookie";
 
@@ -10,11 +12,15 @@ const LOG_OUT = "LOG_OUT";
 const GET_ID = "GET_ID";
 
 
+// Action creators
+const logIn = createAction(LOG_IN, (user) => ({ user }));
+const logOut = createAction(LOG_OUT, (user) => ({ user }));
+const getId = createAction(GET_ID, (user) => ({ user }));
 
 // Action creators
-const logIn = (user) => ({type: LOG_IN, user});
-const logOut = (user) => ({type: LOG_OUT, user});
-const getId = (user) => ({type: GET_ID, user});
+// const logIn = (user) => ({type: LOG_IN, user});
+// const logOut = (user) => ({type: LOG_OUT, user});
+// const getId = (user) => ({type: GET_ID, user});
 
 
 // 회원가입 middleware
@@ -111,24 +117,44 @@ const initialState = {
 }
 
 // Reducer
-const handleUser = (state = initialState, action = {}) => {
-	switch(action.type) {
-		case LOG_IN: {
-			return {...state, user: action.user, is_login: true};
-		}
+export default handleActions(
+	{
+		[LOG_IN]: (state, action) => 
+			produce(state, (draft) => {
+				console.log("유저정보" ,state, action.payload);
+				draft.user = action.payload.user;
+        draft.is_login = true;
+			}),
 
-		case LOG_OUT: {
-			localStorageRemove("jwtToken");
-			return {...state, user: action.user, is_login: false};
-		}
+		[LOG_OUT]: (state, action) =>
+      produce(state, (draft) => {
+				localStorageRemove("jwtToken");
+        draft.user = null;
+        draft.is_login = false;
+      }),
 
-		case GET_ID: {
-			return {...state, is_double_check: true};
-		}
+		[GET_ID]: (state, action) => produce(state, (draft) => {}),
+	},
+	initialState
+)
 
-		default : 
-			return state;
-	}
-}
+// Reducer
+// const handleUser = (state = initialState, action = {}) => {
+// 	switch(action.type) {
+// 		case LOG_IN: {
+// 			return {...state, user: action.user, is_login: true};
+// 		}
 
-export default handleUser;
+// 		case LOG_OUT: {
+// 			localStorageRemove("jwtToken");
+// 			return {...state, user: action.user, is_login: false};
+// 		}
+
+// 		case GET_ID: {
+// 			return {...state, is_double_check: true};
+// 		}
+
+// 		default : 
+// 			return state;
+// 	}
+// }
