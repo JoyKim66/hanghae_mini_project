@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-
+const BASE_URL = "http://3.38.107.48/"
 const ADD = "post/ADD";
 const LOAD = "post/LOAD";
 
@@ -19,7 +19,7 @@ export const postLoad = (post_data) => {
 //미들웨어
 export const getPostList =() => {
     return async function(dispatch){
-        axios.get("http://localhost:5001/cafe_list")
+        axios.get(`${BASE_URL}/cafereview/list`)
         .then(response => {
             console.log('respose: ',response.data);
             dispatch(postLoad(response.data))})}

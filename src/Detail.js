@@ -10,7 +10,6 @@ import { useParams,useHistory } from 'react-router-dom';
 
 
 const Detail = () => {
-    const post_list = useSelector((state) => state.post.list);
     const post_id = useParams().id;
     const history = useHistory();
     const [getData,setGetData] = React.useState(null);
