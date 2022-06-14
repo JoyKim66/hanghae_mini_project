@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components"
 import { useDispatch } from 'react-redux';
 import { loginFB } from "./redux/modules/user"
@@ -37,7 +38,7 @@ const Login = () => {
 					}}/>
 				</label>
 				<Btn onClick={login}>로그인하기</Btn>
-				<SubText>아직 커피바라 계정이 없나요? <a href="/signup">회원가입</a></SubText>
+				<SubText>아직 커피바라 계정이 없나요? <Link to="/signup">회원가입</Link></SubText>
 		</LoginInner>
 	);
 }

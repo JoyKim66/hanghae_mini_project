@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { localStorageGet } from "./shared/localStorage";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutFB } from "./redux/modules/user";
@@ -20,7 +20,7 @@ const Header = () => {
 		return (
 			<HeaderWrap>
 			<HeaderInner>
-				<h2><a href="/">홈</a></h2>
+				<h2><Link to="/">홈</Link></h2>
 				<ul className="userInner">
 					<li onClick={() => {
 						history.push("/login")
