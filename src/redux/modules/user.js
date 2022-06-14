@@ -2,7 +2,7 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { localStorageRemove, localStorageSet } from "../../shared/localStorage";
-import { setCookie, getCookie, deleteCookie } from "../../shared/cookie";
+import { setCookie } from "../../shared/cookie";
 
 // Actions Type
 const LOG_IN = "LOG_IN";
@@ -25,12 +25,7 @@ export const signUpFB = (payload) => {
 		.then((res) => {
 			if(res.data){
 				window.alert("회원가입이 완료되었습니다!");
-				dispatch(
-					logIn({
-						is_login: true
-					})
-				);
-				history.replace("/");
+				history.replace("/login");
 			}
 		})
 		.catch((err) => {

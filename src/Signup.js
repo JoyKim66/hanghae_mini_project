@@ -41,7 +41,7 @@ const Signup = () => {
     }
 
 		if( !id_check ){
-			window.alert("중복 확인 버튼을 눌러주세요");
+			window.alert("중복확인 버튼을 눌러주세요");
       return;
 		}
 

@@ -20,7 +20,7 @@ const Header = () => {
 		return (
 			<HeaderWrap>
 			<HeaderInner>
-			<h2><a href="/">홈</a></h2>
+				<h2><a href="/">홈</a></h2>
 				<ul className="userInner">
 					<li onClick={() => {
 						history.push("/login")
