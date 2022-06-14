@@ -1,32 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { emailCheck } from './shared/common';
-import { signUpFB } from "./redux/modules/user"
+import { idDoubleCheckFB, signUpFB } from "./redux/modules/user"
+import { localStorageGet } from './shared/localStorage';
+
+const token = localStorageGet("jwtToken");
 
 const Signup = () => {
-	const [id, setId] = useState("");
-	const [pwd, setPwd] = useState("");
+	const [userid, setId] = useState("");
+	const [password, setPwd] = useState("");
 	const [pwd_check, setPwdCheck] = useState("");
-	const [user_name, setUserName] = useState("");
+	const [nickname, setUserName] = useState("");
 	const dispatch = useDispatch();
+	const id_check = useSelector((state) => state.user.is_double_check);
 
-	const signupFu = async () => {
-		if (!id || !pwd || !user_name) {
+	const idDoubleCheck = () => {
+		if (!userid) {
+      window.alert("아이디를 입력해주세요!");
+      return;
+    }
+
+		dispatch(idDoubleCheckFB(userid));
+	}
+
+	const signupFu = () => {
+		if (!userid || !password || !nickname) {
       window.alert("아이디, 패스워드, 닉네임을 모두 입력해주세요!");
       return;
     }
 
-    if(!emailCheck(id)){
+    if(!emailCheck(userid)){
       window.alert('이메일 형식이 맞지 않습니다!');
       return;
     }
 
-		if (pwd !== pwd_check) {
+		if (password !== pwd_check) {
       window.alert("패스워드와 패스워드 확인이 일치하지 않습니다!");
       return;
     }
-		const new_obj = {id, pwd, user_name}
+
+		if( !id_check ){
+			window.alert("중복확인 버튼을 눌러주세요");
+      return;
+		}
+
+		const new_obj = {userid, password, nickname}
 		dispatch(signUpFB(new_obj))
   }
 
@@ -37,7 +56,8 @@ const Signup = () => {
 				<p>아이디</p> 
 				<Input onChange={(e) => {
 					setId(e.target.value);
-				}} placeholder="이메일"/>
+				}} placeholder="아이디(이메일)"/>
+				<button className='id_double_check' onClick={idDoubleCheck}>중복확인</button>
 			</label>
 			<label>
 				<p>닉네임</p> 
@@ -72,8 +92,25 @@ const SignupInner = styled.div`
 	& label {
 		display: block;
 		margin-bottom: 20px;
+		position: relative;
 		& .pwConfirm {
 			margin-top: 10px;
+		}
+		& .id_double_check {
+			font-size: 12px;
+			background-color: #333;
+			color: #fff;
+			padding: 5px 8px;
+			border-radius: 0.4em;
+			position: absolute;
+			top: 50%;
+			right: 10px;
+			transform: translateY(-10%);
+		}
+		& p {
+			font-size:12px;
+			margin-bottom: 4px;
+			font-weight: 600;
 		}
 	}
 `
@@ -85,6 +122,9 @@ const Input = styled.input`
 	padding: 10px;
 	border: 2px solid #333;
 	border-radius: 3px;
+	&::placeholder {
+		font-size: 12px;
+	}
 `
 const H2 = styled.h2`
 	font-size: 26px;
