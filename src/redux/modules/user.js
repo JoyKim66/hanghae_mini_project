@@ -20,7 +20,7 @@ const getId = (user) => ({type: GET_ID, user});
 // 회원가입 middleware
 export const signUpFB = (payload) => {
 	return function (dispatch, getState, { history }) {
-		axios.post("http://13.209.43.69/user/signup", {
+		axios.post("http://3.38.107.48/user/signup", {
 			userid: payload.userid,
 			password: payload.password,
 			nickname: payload.nickname,
@@ -40,7 +40,7 @@ export const signUpFB = (payload) => {
 // 아이디 중복 검사 middleware
 export const idDoubleCheckFB = (userId) => {
 	return function (dispatch, getState, {history}){
-		axios.post("http://13.209.43.69/user/signup/useridCheck", {
+		axios.post("http://3.38.107.48/user/signup/useridCheck", {
 			userid: userId
 		})
 		.then((res) => {
@@ -64,7 +64,7 @@ export const idDoubleCheckFB = (userId) => {
 // 로그인 middleware
 export const loginFB = (userId, password) => {
 	return function (dispatch, getState, {history}){
-		axios.post("http://13.209.43.69/user/login", {
+		axios.post("http://3.38.107.48/user/login", {
 			userid: userId,
 			password: password,
 		})

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import axios from 'axios';
+
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
@@ -11,10 +13,11 @@ import ListItemText from '@mui/material/ListItemText';
 
 import {useHistory} from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
+import { localStorageGet } from './shared/localStorage';
 
 import styled from 'styled-components';
 import writebtn from "./writebtn.png"
-import { getPostList } from './redux/modules/post';
+import { getPostList,getCategoryList } from './redux/modules/post';
 
 
 
@@ -22,7 +25,7 @@ function Main() {
     const history = useHistory();
     const dispatch = useDispatch();
     const post_list = useSelector((state)=>state.post.list)
-    console.log(post_list);
+    console.log("post_list: ",post_list);
 
     const coffeebean_list = [
       "에티오피아", 
@@ -36,9 +39,16 @@ function Main() {
       "모카", 
       "디카페인"]
 
+    const clickedCategory = (e) => {
+      dispatch(getCategoryList(e));
+    }
+
+
     React.useEffect(()=>{
+      console.log('here?')
       dispatch(getPostList());
-    },[]);
+    },[dispatch, history]);
+    
 
   return (
     <WholeContainer>
@@ -48,8 +58,9 @@ function Main() {
             <List>
               {coffeebean_list.map((coffeebean,idx)=> (
                   <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={coffeebean} />
+                  <ListItemButton onClick={clickedCategory} 
+                  value={coffeebean}>
+                    <ListItemText primary={coffeebean}   />
                   </ListItemButton>
                 </ListItem>
               ))}
@@ -66,8 +77,8 @@ function Main() {
               history.push("/detail/"+item.id);
             }}> 
             <img
-                src={`${item.img}?w=248&fit=crop&auto=format`}
-                srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                src={`${item.imgUrl}?w=248&fit=crop&auto=format`}
+                srcSet={`${item.imgUrl}?w=248&fit=crop&auto=format&dpr=2 2x`}
                 alt={item.cafename}
                 loading="lazy"
             />
