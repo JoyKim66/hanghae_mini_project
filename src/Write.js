@@ -10,9 +10,9 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 
 import { useDispatch } from 'react-redux';
-import {useHistory} from "react-router-dom";
+import {useHistory,useParams} from "react-router-dom";
 
-import { postAdd, postPostList } from './redux/modules/post';
+import { postAdd, postPostList, updatePostList } from './redux/modules/post';
 
 
 
@@ -27,6 +27,9 @@ const Write = () => {
     const [cafename, setCafename] = React.useState(null);
     const [cafereview, setCafeReview] = React.useState(null);
     const [img, setImg] = React.useState(null);
+
+    const id = useParams().id;
+    console.log(id);
 
     //redux 
     const dispatch = useDispatch();
@@ -63,8 +66,8 @@ const Write = () => {
         
     }
     const uploadImage = (e) => {
-        // console.log(e.target.files[0].name);
-        setImg(e.target.files[0].name);
+        console.log(e.target.files[0]);
+        setImg(e.target.files[0]);
     }
 
     const addPost = (e) => {
@@ -78,7 +81,14 @@ const Write = () => {
         // dispatch(postAdd({
         //     post_data: {cafename,review,coffeebeanname},img
         // }));
-        history.push("/");
+        // history.push("/");
+    }
+    const editPost = (e) => {
+        e.preventDefault();
+        const edited_data = {
+            post_data: {cafename,cafereview,coffeebeanname},img
+        }
+        dispatch(updatePostList(edited_data,id)); 
     }
 
     return (
@@ -150,6 +160,7 @@ const Write = () => {
         <ButtonWrap>
             <Button2>뒤로가기</Button2>
             <Button2 onClick={addPost}>등록하기</Button2>
+            <Button2 onClick={editPost}>수정하기</Button2>
         </ButtonWrap>
     </div>   
     </Container>
