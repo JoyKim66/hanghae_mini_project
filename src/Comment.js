@@ -1,24 +1,17 @@
 import React, { useRef, useState } from "react";
 import axios from 'axios';
-import { localStorageGet } from "./shared/localStorage";
 import { useDispatch} from "react-redux";
 import jwt_decode from "jwt-decode";
-
-
-
 import styled from "styled-components";
-
+import { getComment } from "./shared/common";
+import { localStorageGet } from "./shared/localStorage";
+const SIZE = 4; //고정 값
 
 const Comment = ({post_id}) => {
     const comment_ref = useRef();
     const edit_ref = useRef();
-    const [commentList,setCommentList] = useState([]);
-    const [isEdit,setIsEdit] = useState(null);
     const dispatch = useDispatch();
    
-
-
-
     //토큰 받아와서 유저정보 획득하기
     const token = localStorageGet("jwtToken");
     // console.log(token);
@@ -29,15 +22,18 @@ const Comment = ({post_id}) => {
     const userId = decoded_token.Userid;
     //nickname
     const nickname = decoded_token.nickname;
+    const [isEdit, setIsEdit] = useState(null);
+    const [sortBy, setOrder] = useState('id');
+    const [page, setOffset] = useState(1);
+    const [hasNext, setHasNext] = useState(false);
+    const [items, setItems] = useState([]);
 
-    // console.log('post_id: ',post_id);
     const addComment = () => {
-        // console.log(comment_ref.current.value);
-            if (!comment_ref.current.value) {
-                alert("댓글을 작성해주세요")
-            return null;}
-            dispatch(postCommentList());
-            }
+        if (!comment_ref.current.value) {
+            alert("댓글을 작성해주세요")
+        return null;}
+        dispatch(postCommentList());
+    }
     const postCommentList = () => {
         return async function(dispatch, getState, { history }){
             axios({
@@ -56,7 +52,7 @@ const Comment = ({post_id}) => {
     }
     const clickedUpdateComment = (e) => {
         setIsEdit(e.target.value); 
-        }
+    }
 
     const updateComment = () => {
         if (!edit_ref.current.value) {
@@ -89,12 +85,33 @@ const Comment = ({post_id}) => {
             })
             window.location.replace("/detail/"+post_id)
     }
+
+
+    const handleLoad = async (options) => {
+        const data = await getComment(options);
+        console.log(data)
+        if (options.page === 1) {
+          setItems(data.content);
+        } else {
+          setItems([...items, ...data.content]);
+        }
+        setOffset(options.page + 1);
+        setHasNext(data.last);
+    };
     
+    const handleLoadMore = async () => {
+        await handleLoad({ sortBy, page, post_id, size: SIZE });
+    };
+
     React.useEffect(()=>{
+<<<<<<< Updated upstream
         axios.get(`http://3.38.107.48/reply/list/${post_id}`).then(response => {
         setCommentList(response.data);
         // console.log('commentList',response.data)
         });
+=======
+        handleLoad({ sortBy, page: 1, post_id, size: SIZE })
+>>>>>>> Stashed changes
     },[])
 
     return (
@@ -105,10 +122,12 @@ const Comment = ({post_id}) => {
                 댓글작성: 
                 <Input type="text" ref={comment_ref}/>
                 <Button onClick={addComment}>등록</Button>
-            </InputBox> 
+                
+            </InputBox>
                 )}
+           
             { 
-                commentList.map((comment,idx) => (
+                items.map((comment,idx) => (
                     parseInt(isEdit) === comment.id? 
                     (<InputBox>
                         댓글수정: 
@@ -117,7 +136,7 @@ const Comment = ({post_id}) => {
                         <Button onClick={updateComment}>수정</Button>
                     </InputBox>)
                     : (
-                <CommentView>
+                <CommentView key={idx}>
                     <div>{comment.nickname}</div>
                     <CommentContent>{comment.reply}</CommentContent>
                    {comment.userid === userId? (
@@ -130,6 +149,7 @@ const Comment = ({post_id}) => {
                     )
              ))
             }
+             <Btn disabled={hasNext} onClick={handleLoadMore}>더보기</Btn>
             
         </CommentBox>
     )
@@ -141,6 +161,7 @@ const CommentBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 60px;
 `;
 
 const CommentView = styled.div`
@@ -179,3 +200,13 @@ const Button = styled.button`
     border-radius: 3px;
     color: #fff;
 `;
+const Btn = styled.button`
+    width: 100px;
+    height: 30px;
+    border: 1px solid #333;
+    border-radius: 0.4em;
+    margin-top: 10px;
+    &:disabled{
+        display: none;
+    }
+`

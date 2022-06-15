@@ -4,11 +4,10 @@ import jwtDecode from "jwt-decode";
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { localStorageRemove, localStorageSet } from "../../shared/localStorage";
-import { setCookie } from "../../shared/cookie";
 import { postLoad } from "./post";
+import {BASE_URL} from '../../assets/config';
 
 // Actions Type
-const IP = "http://3.38.107.48"
 const LOG_IN = "LOG_IN";
 const LOG_OUT = "LOG_OUT";
 const GET_ID = "GET_ID";
@@ -27,7 +26,7 @@ const getId = createAction(GET_ID, (user) => ({ user }));
 // 회원가입 middleware
 export const signUpFB = (payload) => {
 	return function (dispatch, getState, { history }) {
-		axios.post(`${IP}/user/signup`, {
+		axios.post(`${BASE_URL}/user/signup`, {
 			userid: payload.userid,
 			password: payload.password,
 			nickname: payload.nickname,
@@ -47,7 +46,7 @@ export const signUpFB = (payload) => {
 // 아이디 중복 검사 middleware
 export const idDoubleCheckFB = (userId) => {
 	return function (dispatch, getState, {history}){
-		axios.post(`${IP}/user/signup/useridCheck`, {
+		axios.post(`${BASE_URL}/user/signup/useridCheck`, {
 			userid: userId
 		})
 		.then((res) => {
@@ -71,7 +70,7 @@ export const idDoubleCheckFB = (userId) => {
 // 로그인 middleware
 export const loginFB = (userId, password) => {
 	return function (dispatch, getState, {history}){
-		axios.post(`${IP}/user/login`, {
+		axios.post(`${BASE_URL}/user/login`, {
 			userid: userId,
 			password: password,
 		})

@@ -1,3 +1,6 @@
+import {BASE_URL} from '../assets/config';
+import { localStorageGet } from './localStorage';
+
 // 이메일형식
 export const emailCheck = (email) => {
 	let _reg = /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-z])*.([a-zA-Z])*/;
@@ -25,3 +28,19 @@ export const usernameCHK = (username) => {
   let _reg = /^[가-힣a-zA-Z]+$/;
   return _reg.test(username);
 };
+
+// 무한스크롤
+export const getComment = async ({
+  sortBy = 'id', 
+  page = 1,
+  post_id,
+  size = 5}) => {
+  const query = `sortBy=${sortBy}&page=${page}&size=${size}`;
+  const response = await fetch(`${BASE_URL}/reply/list/paging/${post_id}?${query}`,{
+    headers: {
+      'Authorization': "Bearer " + localStorageGet("jwtToken") ,
+    },
+  });
+  const body = await response.json();
+  return body;
+}

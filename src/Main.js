@@ -46,7 +46,6 @@ function Main() {
       dispatch(getCategoryList(e));
     }
 
-
     React.useEffect(()=>{
       dispatch(getPostList());
     },[]);
