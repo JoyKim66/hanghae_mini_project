@@ -4,49 +4,57 @@ import styled from "styled-components";
 
 import Comment from './Comment';
 
-import { useSelector } from "react-redux";
 import { useParams,useHistory } from 'react-router-dom';
+import { deletePostList } from './redux/modules/post';
+import { useDispatch } from "react-redux";
+
 
 
 
 const Detail = () => {
     const post_id = useParams().id;
     const history = useHistory();
-    const [getData,setGetData] = React.useState(null);
+    const [getData,setGetData] = React.useState({});
     console.log("post_id: ",post_id);
 
+    const dispatch = useDispatch();
+
     React.useEffect(()=>{
-        axios.get(`http://localhost:5001/cafe_list/${post_id}`)
+        axios.get(`http://3.38.107.48/cafereview/list/detail/${post_id}`)
         .then(response=> {
             console.log('respose: ',response.data);
             setGetData(response.data);
         })},[])
+
+    const postDelete = () => {
+        dispatch(deletePostList(post_id));
+    }    
     return (
         <div>
         <Container>
-            <ImageBox>이미지부분{getData?.data.imgUrl}</ImageBox>
+            <ImageBox><Image src={getData?.imgUrl}/></ImageBox>
             <TextBox>
-                <NameBox>{getData?.data.post_data.cafename}
+                <NameBox>{getData?.cafename}
                 <div><hr style={{width:"100%"}}/></div>
                 </NameBox>
-                <CategoryBox>원두이름:{getData?.data.post_data.coffeebeanname}</CategoryBox>
+                <CategoryBox>원두이름:{getData?.coffeebeanname}</CategoryBox>
                 <ReviewBox>
                     <div>
                         <Review>
-                            {getData?.data.post_data.cafereview}
+                            {getData?.cafereview}
                         </Review>
                         <ButtonBox>
                             <Button onClick={()=> {
                                 history.push("/write/"+post_id)
                             }}>수정</Button>
-                            <Button>삭제</Button>
+                            <Button onClick={postDelete}>삭제</Button>
                         </ButtonBox>
                         
                     </div>
                 </ReviewBox>
             </TextBox>
         </Container>
-        <Comment/>
+        <Comment post_id={post_id}/>
     </div>
     )
 }
@@ -62,7 +70,15 @@ const ImageBox = styled.div`
     height: 500px;
     border: 1px solid #d3d3d3;  
     margin: 20px;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;  
+const Image = styled.img`
+    width: 50%;
+    height: auto;
+   
+`;
 const TextBox = styled.div`
     width: 50%;
     height: 500px;
