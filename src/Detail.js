@@ -16,29 +16,42 @@ const Detail = () => {
     const history = useHistory();
     const [getData, setGetData] = React.useState({});
     const [Like, setLike] = React.useState(false);
-    console.log("post_id: ",post_id);
 
     const dispatch = useDispatch();
 
     const toggleLike = async () => {
-        if(Like){
-            console.log("1")
+        if(Like){ // 이미 좋아요를 눌렀는데 다시 눌렀을 때
             await axios.get(`http://3.38.107.48/like/${post_id}`,{
                 headers: {'Authorization': "Bearer " + localStorageGet("jwtToken")},
             })
             .then(res => {
-                console.log(res)
                 setLike(false);
             })
-        } else if(!Like) {
-            await axios.get(`http://3.38.107.48/unlike/${post_id}`,{
-                headers: {'Authorization': "Bearer " + localStorageGet("jwtToken")},
-            })
-            .then((res) => {
-                console.log(res.data)
-                setLike(true);
-            });
+        } else if(!Like) {  // 아무것도 누르지 않은 상태일 때
+            try{
+                await axios.get(`http://3.38.107.48/unlike/${post_id}`,{
+                    headers: {'Authorization': "Bearer " + localStorageGet("jwtToken")},
+                })
+                .then((res) => {
+                    setLike(true);
+                });
+            }
+            catch(err){
+                if(err.response.status === 403){
+                    window.alert("로그인한 사용자만 이용할수 있습니다.")
+                } 
+            }
         }
+    };
+
+    const handeLoad = () => {
+        axios.get(`http://3.38.107.48/like/check/${post_id}`,{
+            headers: {'Authorization': "Bearer " + localStorageGet("jwtToken")},
+        })
+        .then(res => {
+            console.log(res.data)
+            setLike(res.data);
+        })
     };
 
 
@@ -48,8 +61,8 @@ const Detail = () => {
             console.log('respose: ',response.data);
             setGetData(response.data);
         });
-
-    },[])
+        handeLoad();
+    },[Like])
 
    
 
