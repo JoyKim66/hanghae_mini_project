@@ -14,14 +14,10 @@ const Comment = ({post_id}) => {
    
     //토큰 받아와서 유저정보 획득하기
     const token = localStorageGet("jwtToken");
-    // console.log(token);
     const decoded_token = jwt_decode(token);
-    // console.log(decoded_token);
 
     //userid
     const userId = decoded_token.Userid;
-    //nickname
-    const nickname = decoded_token.nickname;
     const [isEdit, setIsEdit] = useState(null);
     const [sortBy, setOrder] = useState('id');
     const [page, setOffset] = useState(1);
@@ -88,15 +84,14 @@ const Comment = ({post_id}) => {
 
 
     const handleLoad = async (options) => {
-        const data = await getComment(options);
-        console.log(data)
+        const {content, last} = await getComment(options);
         if (options.page === 1) {
-          setItems(data.content);
+          setItems(content);
         } else {
-          setItems([...items, ...data.content]);
+          setItems([...items, ...content]);
         }
         setOffset(options.page + 1);
-        setHasNext(data.last);
+        setHasNext(last);
     };
     
     const handleLoadMore = async () => {
@@ -104,14 +99,7 @@ const Comment = ({post_id}) => {
     };
 
     React.useEffect(()=>{
-<<<<<<< Updated upstream
-        axios.get(`http://3.38.107.48/reply/list/${post_id}`).then(response => {
-        setCommentList(response.data);
-        // console.log('commentList',response.data)
-        });
-=======
         handleLoad({ sortBy, page: 1, post_id, size: SIZE })
->>>>>>> Stashed changes
     },[])
 
     return (
@@ -187,7 +175,7 @@ const Input = styled.input`
     border-radius: 5px;
     width: 100%;
 `;
-const ButtonBox = styled.button`
+const ButtonBox = styled.div`
     display: flex;
     width: 80%;
     justify-content: flex-end;

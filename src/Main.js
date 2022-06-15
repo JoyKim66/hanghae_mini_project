@@ -62,7 +62,7 @@ function Main() {
                   <ListItem disablePadding key={idx}>
                   <ListItemButton onClick={clickedCategory} 
                   value={coffeebean}>
-                    <ListItemText primary={coffeebean}   />
+                    <ListItemText primary={coffeebean}/>
                   </ListItemButton>
                 </ListItem>
               ))}
@@ -133,7 +133,6 @@ const Container = styled(ImageList)`
   height: auto;
   margin: 0;
   overflow-y: visible !important;
-  }
 `;
 
 const AddButton = styled.div`
@@ -148,7 +147,7 @@ const Img = styled.img`
   top: 85%;
   left: 90%;
 `;
-const List = styled.li`
+const List = styled.ul`
   cursor: url(myBall.cur),auto;
 `;
 

@@ -19,17 +19,12 @@ const Detail = () => {
     const [getData,setGetData] = React.useState({});;
     const dispatch = useDispatch();
 
-
     //토큰 받아와서 유저정보 획득하기
     const token = localStorageGet("jwtToken");
-    // console.log(token);
     const decoded_token = jwt_decode(token);
-    // console.log(decoded_token);
 
     //userid
     const userId = decoded_token.Userid;
-    //nickname
-    const nickname = decoded_token.nickname;
     const [Like, setLike] = React.useState(false);
 
     const toggleLike = async () => {
@@ -57,23 +52,12 @@ const Detail = () => {
         }
     };
 
-    const handeLoad = () => {
-        axios.get(`http://3.38.107.48/like/check/${post_id}`,{
-            headers: {'Authorization': "Bearer " + localStorageGet("jwtToken")},
-        })
-        .then(res => {
-            console.log(res.data)
-            setLike(res.data);
-        })
-    };
 
     React.useEffect(()=>{
         axios.get(`http://3.38.107.48/cafereview/list/detail/${post_id}`)
         .then(response=> {
-            console.log('respose: ',response.data);
             setGetData(response.data);
         });
-        handeLoad();
     },[Like])
 
     const postDelete = () => {
@@ -84,17 +68,17 @@ const Detail = () => {
         <Container>
             <ImageBox><Image src={getData?.imgUrl}/></ImageBox>
             <TextBox>
-                <NameBox>{getData?.cafename}
-                <div><hr style={{width:"100%"}}/></div>
-                </NameBox>
+                <div className='inner'>
+                    <NameBox>{getData?.cafename}</NameBox>
+                    <LikeInner onClick={toggleLike} className={Like ? null : "is_on"}>
+                            <span className="like_off"><img src={like_off} alt="좋아요 아이콘"/></span>
+                            <span className="like_on"><img src={like_on} alt="좋아요 아이콘"/></span>
+                    </LikeInner>
+                </div>
                 <CategoryBox>원두이름:{getData?.coffeebeanname}</CategoryBox>
                 <ReviewBox>
                     <NameBox>
                         <h2>{getData?.cafename}</h2>
-                        <LikeInner onClick={toggleLike} className={Like ? null : "is_on"}>
-                            <span className="like_off"><img src={like_off} alt="좋아요 아이콘"/></span>
-                            <span className="like_on"><img src={like_on} alt="좋아요 아이콘"/></span>
-                        </LikeInner>
                     </NameBox>
                     <div>
                         <Review>
@@ -162,10 +146,14 @@ const TextBox = styled.div`
     justify-content: flex-start;
     padding: 0 10px;
     margin: 20px;
-    `;
+    & > .inner{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+`;
 const NameBox = styled.div`
     width: 100%;
-    height: 100px;
     font-size: large;
     padding: 20px 0;
     font-weight: 700;
