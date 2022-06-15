@@ -5,6 +5,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { localStorageRemove, localStorageSet } from "../../shared/localStorage";
 import { setCookie } from "../../shared/cookie";
+import { postLoad } from "./post";
 
 // Actions Type
 const IP = "http://3.38.107.48"
@@ -102,8 +103,7 @@ export const logoutFB = () => {
 		localStorageRemove("jwtToken");
 		dispatch(logOut());
 		window.alert("로그아웃 되었습니다.")
-		// history.replace("/");
-		window.location.replace("/");
+		dispatch(postLoad());
 	}
 }
 

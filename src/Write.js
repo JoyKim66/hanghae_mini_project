@@ -9,7 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {useHistory,useParams} from "react-router-dom";
 
 import { postAdd, postPostList, updatePostList } from './redux/modules/post';
@@ -25,15 +25,21 @@ const Write = () => {
     const [cafename, setCafename] = React.useState(null);
     const [cafereview, setCafeReview] = React.useState(null);
     const [img, setImg] = React.useState(null);
+    const write_data = useSelector((state)=>state.post.list);
+    console.log('write_data',write_data);
 
     const history = useHistory();
 
     const id = useParams().id;
-    console.log(id);
+    // console.log(id);
 
     //redux 
     const dispatch = useDispatch();
-
+    const edit_idx = write_data.findIndex((w)=>{
+        return w.id === parseInt(id)
+    })
+    console.log(edit_idx);
+    console.log(write_data[edit_idx]);
 
     
     //원두배열 (store에 저장하기)
@@ -51,7 +57,7 @@ const Write = () => {
 
     //input값 change관리
     const handleSelectChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
       setCoffeebeanName(e.target.value);
     };
 
@@ -65,7 +71,7 @@ const Write = () => {
         
     }
     const uploadImage = (e) => {
-        console.log(e.target.files[0]);
+        // console.log(e.target.files[0]);
         setImg(e.target.files[0]);
     }
 
@@ -121,7 +127,8 @@ const Write = () => {
                 <TextField
             required
             id="outlined-required"
-            label="카페이름"
+            label="카페이름" 
+            defaultValue={id? write_data[edit_idx]?.cafename :null}
             onChange={handleNameChange}
                 />
             </TextBox>   
@@ -152,6 +159,7 @@ const Write = () => {
         <TextField
           id="outlined-multiline-static"
           label="카페 후기 상세내용"
+          defaultValue={id? write_data[edit_idx]?.cafereview :null}
           multiline
           onChange={handleReviweChange}
           rows={4}

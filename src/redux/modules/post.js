@@ -32,19 +32,19 @@ export const getPostList =() => {
     return async function(dispatch){
         axios.get(`${BASE_URL}/cafereview/list`)
         .then(response => {
-            console.log('respose: ',response.data);
+            // console.log('respose: ',response.data);
             dispatch(postLoad(response.data))})}
     }
 
 export const getCategoryList = (e) => {
     return async function(dispatch){
-        console.log("ddd");
+        // console.log("ddd");
         axios({
             method: "get",
             url: `http://3.38.107.48/cafereview/list/${e.target.innerText}`,
             
             }).then((response)=> {
-                console.log('category_response ',response.data);
+                // console.log('category_response ',response.data);
                 dispatch(categoryLoad(response.data));
             })
     }
@@ -53,8 +53,8 @@ export const getCategoryList = (e) => {
 
 export const postPostList = (data) => {
     return async function(dispatch, getState, { history }){
-        console.log(localStorageGet("jwtToken"));
-        console.log("data",data.post_data);
+        // console.log(localStorageGet("jwtToken"));
+        // console.log("data",data.post_data);
         const formData = new FormData();
         formData.append("img",data.img);
         formData.append(
@@ -64,7 +64,7 @@ export const postPostList = (data) => {
             })
         );
         for (let [key, value] of formData.entries()) {
-            console.log(key, value);
+            // console.log(key, value);
           }
         await axios({
         method: "post",
@@ -75,7 +75,7 @@ export const postPostList = (data) => {
             'Authorization': "Bearer " + localStorageGet("jwtToken") ,
         },
         }).then((response)=> {
-            console.log('post_response: ',response.data);
+            // console.log('post_response: ',response.data);
             history.replace("/")
         })
     }
@@ -83,7 +83,7 @@ export const postPostList = (data) => {
 
 export const updatePostList = (data,id) => {
     return async function(dispatch, getState, { history }){
-        console.log("edit_data: ",data,id);
+        // console.log("edit_data: ",data,id);
         const formData = new FormData();
         formData.append("img",data.img);
         formData.append(
@@ -102,7 +102,7 @@ export const updatePostList = (data,id) => {
             'Authorization': "Bearer " + localStorageGet("jwtToken") ,
         },
         }).then((response)=> {
-            console.log('update_response: ',response.data);
+            // console.log('update_response: ',response.data);
             history.replace("/");
             alert("게시글이 수정되었습니다")
         })
@@ -112,7 +112,7 @@ export const updatePostList = (data,id) => {
 }
 export const deletePostList = (id) => {
     return async function(dispatch, getState, { history }){
-        console.log('id:', id);
+        // console.log('id:', id);
         await axios({
             method: "delete",
             url: `${BASE_URL}/cafereview/${id}`,
@@ -121,7 +121,7 @@ export const deletePostList = (id) => {
                 'Authorization': "Bearer " + localStorageGet("jwtToken") ,
             },
             }).then((response)=> {
-                console.log('delete_response: ',response.data);
+                // console.log('delete_response: ',response.data);
                 history.replace("/");
                 alert("게시글이 삭제되었습니다")
             })
@@ -145,19 +145,18 @@ export default function reducer(state=initialState,action={}){
         //     return {list:new_post_obj};
         // }
         
-        case "post/LOAD" : {
-            console.log('load_action: ',action);
-            if(localStorageGet("jwtToken")){
-                return {...state,list: action.post_data,is_token:true};
-            }else {
-                return {...state,list: action.post_data}
+        case "post/LOAD": {
+            if (localStorageGet("jwtToken")) {
+              // 1. 로그인해서 들어와서 로드할 때
+              return {...state, list: action.post_data, is_token: true };
+            } else if (action.post_data) {
+              // 2. 처음 메인 페이지 들어와서 로드할 때
+              return {...state, list: action.post_data, is_token: false };
+            } else {
+              // 3. 로그아웃해서 LOAD 액션할 때
+              return {...state, is_token: false };
             }
-        }
-        case "post/CATEGORY_LOAD" : {
-            // console.log(action);
-            return {list: action.catagory_data};
-        }
-        
+          }
         
         default:
         return state;

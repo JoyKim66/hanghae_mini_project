@@ -30,7 +30,7 @@ const Comment = ({post_id}) => {
     //nickname
     const nickname = decoded_token.nickname;
 
-    console.log('post_id: ',post_id);
+    // console.log('post_id: ',post_id);
     const addComment = () => {
         // console.log(comment_ref.current.value);
             if (!comment_ref.current.value) {
@@ -40,7 +40,6 @@ const Comment = ({post_id}) => {
             }
     const postCommentList = () => {
         return async function(dispatch, getState, { history }){
-            console.log("미들웨어");
             axios({
                 method: "post",
                 url: `http://3.38.107.48/reply/${post_id}`,
@@ -51,7 +50,6 @@ const Comment = ({post_id}) => {
                     'Authorization': "Bearer " + localStorageGet("jwtToken") ,
                 },
                 }).then((response)=> {
-                    console.log('comment_response ',response.data);
                 })
             window.location.replace("/detail/"+post_id)
         }
@@ -74,12 +72,12 @@ const Comment = ({post_id}) => {
                 'Authorization': "Bearer " + localStorageGet("jwtToken") ,
             },
             }).then((response)=> {
-                console.log('update_comment_response ',response.data);
+                // console.log('update_comment_response ',response.data);
             })
             window.location.replace("/detail/"+post_id)
     }
     const deleteComment = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         axios({
             method: "delete",
             url: `http://3.38.107.48/reply/${post_id}/${e.target.value}`,
@@ -87,7 +85,7 @@ const Comment = ({post_id}) => {
                 'Authorization': "Bearer " + localStorageGet("jwtToken") ,
             },
             }).then((response)=> {
-                console.log('delete_comment_response ',response.data);
+                // console.log('delete_comment_response ',response.data);
             })
             window.location.replace("/detail/"+post_id)
     }
@@ -95,7 +93,7 @@ const Comment = ({post_id}) => {
     React.useEffect(()=>{
         axios.get(`http://3.38.107.48/reply/list/${post_id}`).then(response => {
         setCommentList(response.data);
-        console.log('commentList',response.data)
+        // console.log('commentList',response.data)
         });
     },[])
 
