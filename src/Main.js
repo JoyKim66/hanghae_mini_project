@@ -24,8 +24,11 @@ function Main() {
     const history = useHistory();
     const dispatch = useDispatch();
     const post_list = useSelector((state)=>state.post.list)
-    console.log("post_list: ",post_list);
-    const is_token = localStorageGet("jwtToken");
+    // console.log("post_list: ",post_list);
+    const is_login = useSelector((state)=>state.post.is_token)
+    // console.log('is_login',is_login);
+  
+
 
     const coffeebean_list = [
       "에티오피아", 
@@ -52,7 +55,8 @@ function Main() {
   return (
     <WholeContainer>
       
-        <Category>원두 카테고리
+        <Category>
+          <div>Category</div>
           <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             <List>
               {coffeebean_list.map((coffeebean,idx)=> (
@@ -73,7 +77,7 @@ function Main() {
         {post_list.map((item,idx) => (
             <ImageListItem key={item.id}
             onClick={()=>{
-              is_token?( 
+              is_login?( 
               history.push("/detail/"+item.id)
               ) : (
               history.push("/error")
@@ -98,13 +102,13 @@ function Main() {
             />
             </ImageListItem>
         ))}
-        {is_token?(
+        {is_login&&
         <AddButton>
             <Img src={writebtn} onClick={()=>{
                   history.push("/write")
             }}/>
         </AddButton>
-            ) : null}
+                }
         </Container>
     </WholeContainer>
   );
@@ -120,9 +124,11 @@ const Category = styled.div`
     width: 15%;
     border: 1px solid #eee;
     height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     
 `;
-
 const Container = styled(ImageList)`
   width: 80%;
   height: auto;
@@ -144,9 +150,7 @@ const Img = styled.img`
   left: 90%;
 `;
 const List = styled.li`
-  border: 1px solid;
   cursor: url(myBall.cur),auto;
-
 `;
 
 
