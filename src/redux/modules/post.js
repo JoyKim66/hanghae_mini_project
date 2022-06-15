@@ -73,14 +73,13 @@ export const postPostList = (data) => {
         },
         }).then((response)=> {
             console.log('post_response: ',response.data);
-            // dispatch(postAdd(response.data));
             history.replace("/")
         })
     }
 }
 
 export const updatePostList = (data,id) => {
-    return async function(dispatch){
+    return async function(dispatch, getState, { history }){
         console.log("edit_data: ",data,id);
         const formData = new FormData();
         formData.append("img",data.img);
@@ -101,12 +100,14 @@ export const updatePostList = (data,id) => {
         },
         }).then((response)=> {
             console.log('update_response: ',response.data);
-            // dispatch(postAdd(response.data));
+            history.replace("/");
         })
+
+
     }
 }
 export const deletePostList = (id) => {
-    return async function(dispatch){
+    return async function(dispatch, getState, { history }){
         console.log('id:', id);
         await axios({
             method: "delete",
@@ -117,7 +118,7 @@ export const deletePostList = (id) => {
             },
             }).then((response)=> {
                 console.log('delete_response: ',response.data);
-                // dispatch(postAdd(response.data));
+                history.replace("/");
             })
     }
 } 
