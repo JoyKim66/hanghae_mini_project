@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
 import { emailCheck } from './shared/common';
 import { idDoubleCheckFB, signUpFB } from "./redux/modules/user"
-import { localStorageGet } from './shared/localStorage';
-
-const token = localStorageGet("jwtToken");
 
 const Signup = () => {
 	const [userid, setId] = useState("");
@@ -18,6 +15,11 @@ const Signup = () => {
 	const idDoubleCheck = () => {
 		if (!userid) {
       window.alert("아이디를 입력해주세요!");
+      return;
+    }
+
+		if(!emailCheck(userid)){
+      window.alert('이메일 형식이 맞지 않습니다!');
       return;
     }
 
@@ -73,6 +75,7 @@ const Signup = () => {
 				<Input type="password" className='pwConfirm' onChange={(e) => {
 					setPwdCheck(e.target.value)
 				}} placeholder="비밀번호 확인"/>
+				<p className='txt'>영문, 숫자, 특수문자만 조합으로 입력해주세요</p>
 			</label>
 			
 			<Btn onClick={signupFu}>회원가입</Btn>
@@ -112,6 +115,11 @@ const SignupInner = styled.div`
 			margin-bottom: 4px;
 			font-weight: 600;
 		}
+		& .txt {
+			font-size:10px;
+			color: #909090;
+			margin-top: 4px;
+		}
 	}
 `
 
@@ -138,4 +146,5 @@ const Btn = styled.button`
 	padding: 10px;
 	border-radius: 0.4em;
 `
+
 export default Signup;

@@ -56,7 +56,7 @@ function Main() {
           <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             <List>
               {coffeebean_list.map((coffeebean,idx)=> (
-                  <ListItem disablePadding>
+                  <ListItem disablePadding key={idx}>
                   <ListItemButton onClick={clickedCategory} 
                   value={coffeebean}>
                     <ListItemText primary={coffeebean}   />
