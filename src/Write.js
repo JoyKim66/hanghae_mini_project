@@ -15,8 +15,6 @@ import {useHistory,useParams} from "react-router-dom";
 import { postAdd, postPostList, updatePostList } from './redux/modules/post';
 
 
-
-
 const Input = styled('input')({
     display: 'none',
   });
@@ -28,13 +26,14 @@ const Write = () => {
     const [cafereview, setCafeReview] = React.useState(null);
     const [img, setImg] = React.useState(null);
 
+    const history = useHistory();
+
     const id = useParams().id;
     console.log(id);
 
     //redux 
     const dispatch = useDispatch();
 
-    const history = useHistory();
 
     
     //원두배열 (store에 저장하기)
@@ -78,17 +77,18 @@ const Write = () => {
         }
         dispatch(postPostList(data));
         
-        // dispatch(postAdd({
-        //     post_data: {cafename,review,coffeebeanname},img
-        // }));
-        // history.push("/");
+    
     }
     const editPost = (e) => {
         e.preventDefault();
+        if (!(coffeebeanname&&cafename&&cafereview&&img)) {
+            return alert("게시글 작성내용을 채워주세요");
+        }else{
         const edited_data = {
             post_data: {cafename,cafereview,coffeebeanname},img
         }
         dispatch(updatePostList(edited_data,id)); 
+    }
     }
 
     return (
@@ -158,9 +158,13 @@ const Write = () => {
             />
         </Box>
         <ButtonWrap>
-            <Button2>뒤로가기</Button2>
-            <Button2 onClick={addPost}>등록하기</Button2>
+            <Button2 onClick={()=>{
+                history.goBack();
+            }}>뒤로가기</Button2>
+            {id?( 
             <Button2 onClick={editPost}>수정하기</Button2>
+            ): (<Button2 onClick={addPost}>작성하기</Button2>
+            )}
         </ButtonWrap>
     </div>   
     </Container>

@@ -1,5 +1,6 @@
 import React from "react";
 
+import "./App.css"
 import { Route } from "react-router-dom";
 import { ConnectedRouter } from 'connected-react-router';
 
@@ -10,7 +11,8 @@ import Signup from "./Signup";
 import Main from "./Main";
 import Detail from "./Detail";
 import Write from "./Write";
-import  "./App.css"
+import Error from "./Error";
+
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
         <Route path="/write" exact component={Write} />
         <Route path="/write/:id" exact component={Write} />
         <Route path="/signup" exact component={Signup} />
+        <Route path="/error" exact component={Error} />
       </ConnectedRouter>
     </div>
   );

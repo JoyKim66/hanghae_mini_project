@@ -8,7 +8,6 @@ const ADD = "post/ADD";
 const LOAD = "post/LOAD";
 const CATEGORY_LOAD = "post/CATEGORY_LOAD"
 
-
 const initialState = {list:[]};
 
 
@@ -22,6 +21,7 @@ export const postLoad = (post_data) => {
 export const categoryLoad = (catagory_data) => {
     return {type: CATEGORY_LOAD, catagory_data }
 }
+
 
 
 //미들웨어
@@ -101,6 +101,7 @@ export const updatePostList = (data,id) => {
         }).then((response)=> {
             console.log('update_response: ',response.data);
             history.replace("/");
+            alert("게시글이 수정되었습니다")
         })
 
 
@@ -119,6 +120,7 @@ export const deletePostList = (id) => {
             }).then((response)=> {
                 console.log('delete_response: ',response.data);
                 history.replace("/");
+                alert("게시글이 삭제되었습니다")
             })
     }
 } 
@@ -144,9 +146,10 @@ export default function reducer(state=initialState,action={}){
             return {list: action.post_data};
         }
         case "post/CATEGORY_LOAD" : {
-            console.log(action);
+            // console.log(action);
             return {list: action.catagory_data};
         }
+        
         default:
         return state;
     }

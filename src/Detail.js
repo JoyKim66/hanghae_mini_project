@@ -1,6 +1,9 @@
 import * as React from 'react';
 import axios from 'axios';
 import styled from "styled-components";
+import jwt_decode from "jwt-decode";
+import { localStorageGet } from "./shared/localStorage";
+
 
 import Comment from './Comment';
 
@@ -8,16 +11,25 @@ import { useParams,useHistory } from 'react-router-dom';
 import { deletePostList } from './redux/modules/post';
 import { useDispatch } from "react-redux";
 
-
-
-
 const Detail = () => {
     const post_id = useParams().id;
     const history = useHistory();
     const [getData,setGetData] = React.useState({});
     console.log("post_id: ",post_id);
-
     const dispatch = useDispatch();
+
+
+    //토큰 받아와서 유저정보 획득하기
+    const token = localStorageGet("jwtToken");
+    // console.log(token);
+    const decoded_token = jwt_decode(token);
+    // console.log(decoded_token);
+
+    //userid
+    const userId = decoded_token.Userid;
+    //nickname
+    const nickname = decoded_token.nickname;
+
 
     React.useEffect(()=>{
         axios.get(`http://3.38.107.48/cafereview/list/detail/${post_id}`)
@@ -43,13 +55,15 @@ const Detail = () => {
                         <Review>
                             {getData?.cafereview}
                         </Review>
+                        {getData.userid === userId?(
                         <ButtonBox>
                             <Button onClick={()=> {
                                 history.push("/write/"+post_id)
                             }}>수정</Button>
                             <Button onClick={postDelete}>삭제</Button>
                         </ButtonBox>
-                        
+                        ) : null
+                            }
                     </div>
                 </ReviewBox>
             </TextBox>
@@ -73,10 +87,12 @@ const ImageBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 `;  
 const Image = styled.img`
-    width: 50%;
+    max-width: 100%;
     height: auto;
+    display: block;
    
 `;
 const TextBox = styled.div`

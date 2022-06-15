@@ -1,6 +1,10 @@
 import React, { useRef, useState } from "react";
 import axios from 'axios';
 import { localStorageGet } from "./shared/localStorage";
+import { useDispatch } from "react-redux";
+import jwt_decode from "jwt-decode";
+
+
 
 import styled from "styled-components";
 
@@ -10,6 +14,18 @@ const Comment = ({post_id}) => {
     const edit_ref = useRef();
     const [commentList,setCommentList] = useState([]);
     const [isEdit,setIsEdit] = useState(null);
+    const dispatch = useDispatch();
+
+    //토큰 받아와서 유저정보 획득하기
+    const token = localStorageGet("jwtToken");
+    // console.log(token);
+    const decoded_token = jwt_decode(token);
+    // console.log(decoded_token);
+
+    //userid
+    const userId = decoded_token.Userid;
+    //nickname
+    const nickname = decoded_token.nickname;
 
     console.log('post_id: ',post_id);
     const addComment = () => {
@@ -17,7 +33,12 @@ const Comment = ({post_id}) => {
             if (!comment_ref.current.value) {
                 alert("댓글을 작성해주세요")
             return null;}
-             axios({
+            dispatch(postCommentList());
+            }
+    const postCommentList = () => {
+        return async function(dispatch, getState, { history }){
+            console.log("미들웨어");
+            axios({
                 method: "post",
                 url: `http://3.38.107.48/reply/${post_id}`,
                 data: {
@@ -30,8 +51,8 @@ const Comment = ({post_id}) => {
                     console.log('comment_response ',response.data);
                 })
             window.location.replace("/detail/"+post_id)
-            }
-
+        }
+    }
     const clickedUpdateComment = (e) => {
         setIsEdit(e.target.value); 
         }
@@ -98,10 +119,12 @@ const Comment = ({post_id}) => {
                 <CommentView>
                     <div>{comment.nickname}</div>
                     <CommentContent>{comment.reply}</CommentContent>
+                   {comment.userid === userId? (
                     <ButtonBox>
-                    <Button value={comment.id} onClick={clickedUpdateComment}>수정</Button>
-                    <Button value ={comment.id} onClick={deleteComment}>삭제</Button>
-                    </ButtonBox>    
+                        <Button value={comment.id} onClick={clickedUpdateComment}>수정</Button>
+                        <Button value ={comment.id} onClick={deleteComment}>삭제</Button>
+                    </ButtonBox>  )
+                    :null}
                 </CommentView> 
                     )
              ))
