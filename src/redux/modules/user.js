@@ -79,8 +79,6 @@ export const loginFB = (userId, password) => {
 			//받아온 토큰 속에서 유저네임 찾아내기!
 			const DecodedToken = jwtDecode(token);
 			localStorageSet("jwtToken", token);
-			setCookie("userId", userId);
-			setCookie("nickname", DecodedToken.nickname);
 			dispatch(
 				logIn({
 					is_login: true,

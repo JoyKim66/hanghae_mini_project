@@ -75,6 +75,7 @@ const Signup = () => {
 				<Input type="password" className='pwConfirm' onChange={(e) => {
 					setPwdCheck(e.target.value)
 				}} placeholder="비밀번호 확인"/>
+				<p className='txt'>영문, 숫자, 특수문자만 조합으로 입력해주세요</p>
 			</label>
 			
 			<Btn onClick={signupFu}>회원가입</Btn>
@@ -114,6 +115,11 @@ const SignupInner = styled.div`
 			margin-bottom: 4px;
 			font-weight: 600;
 		}
+		& .txt {
+			font-size:10px;
+			color: #909090;
+			margin-top: 4px;
+		}
 	}
 `
 
@@ -140,4 +146,5 @@ const Btn = styled.button`
 	padding: 10px;
 	border-radius: 0.4em;
 `
+
 export default Signup;
