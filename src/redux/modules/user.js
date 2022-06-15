@@ -98,6 +98,8 @@ export const logoutFB = () => {
 		localStorageRemove("jwtToken");
 		dispatch(logOut());
 		window.alert("로그아웃 되었습니다.")
+		// history.replace("/");
+		window.location.replace("/");
 	}
 }
 

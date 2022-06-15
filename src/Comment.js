@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import axios from 'axios';
 import { localStorageGet } from "./shared/localStorage";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import jwt_decode from "jwt-decode";
 
 
@@ -15,6 +15,9 @@ const Comment = ({post_id}) => {
     const [commentList,setCommentList] = useState([]);
     const [isEdit,setIsEdit] = useState(null);
     const dispatch = useDispatch();
+   
+
+
 
     //토큰 받아와서 유저정보 획득하기
     const token = localStorageGet("jwtToken");
