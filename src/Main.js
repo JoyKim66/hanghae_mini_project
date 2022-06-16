@@ -122,7 +122,7 @@ function Main() {
         
     </WholeContainer>
     <ButtonBox>
-          <Btn disabled={hasNext} onClick={handleLoadMore}>더보기</Btn>
+          {/* <Btn disabled={hasNext} onClick={handleLoadMore}>더보기</Btn> */}
           {is_login&&
             <AddButton>
                 <Img src={writebtn} onClick={()=>{
