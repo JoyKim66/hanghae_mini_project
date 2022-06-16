@@ -79,7 +79,7 @@ const Detail = () => {
             <TextBox>
                 <div className='inner'>
                     <NameBox>{getData?.cafename}</NameBox>
-                    <LikeInner onClick={toggleLike} className={Like ? null : "is_on"}>
+                    <LikeInner onClick={toggleLike} className={Like ? "is_on" : null}>
                         <span className="like_off"><img src={like_off} alt="좋아요 아이콘"/></span>
                         <span className="like_on"><img src={like_on} alt="좋아요 아이콘"/></span>
                     </LikeInner>
