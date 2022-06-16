@@ -13,7 +13,8 @@ import ListItemText from '@mui/material/ListItemText';
 import {useHistory} from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 
-import styled from 'styled-components';
+import styled,{keyframes} from 'styled-components';
+
 import writebtn from "./writebtn.png"
 import { getPostList,getCategoryList } from './redux/modules/post';
 import { postListGet } from './shared/common';
@@ -68,8 +69,8 @@ function Main() {
     },[]);
 
   return (
+    <>
     <WholeContainer>
-      
         <Category>
           <div>Category</div>
           <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -117,16 +118,21 @@ function Main() {
               />
             </ImageListItem>
         ))}
-        <Btn disabled={hasNext} onClick={handleLoadMore}>더보기</Btn>
-        {is_login&&
-          <AddButton>
-              <Img src={writebtn} onClick={()=>{
-                    history.push("/write")
-              }}/>
-          </AddButton>
-        }
+        
         </Container>
+        
     </WholeContainer>
+    <ButtonBox>
+          <Btn disabled={hasNext} onClick={handleLoadMore}>더보기</Btn>
+          {is_login&&
+            <AddButton>
+                <Img src={writebtn} onClick={()=>{
+                      history.push("/write")
+                }}/>
+            </AddButton>
+          }
+    </ButtonBox>
+    </>
   );
 }
 
@@ -146,7 +152,7 @@ const Category = styled.div`
     
 `;
 const Container = styled(ImageList)`
-  width: 85%;
+  width: 85% !important;
   height: auto;
   margin: 0 15% 0 0;
   overflow-y: visible !important;
@@ -156,6 +162,11 @@ const AddButton = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+
+`;
+const rotatedAnimation = keyframes`
+  
+
 `;
 const Img = styled.img`
   max-width: 60px;
@@ -163,12 +174,20 @@ const Img = styled.img`
   position: fixed;
   top: 85%;
   left: 90%;
+  transition: transform 0.2s;
+  &:hover {
+    transform: rotate(30deg);
+  }
 `;
 const List = styled.ul`
   cursor: url(myBall.cur),auto;
 `;
+const ButtonBox = styled.div`
+  display: flex;
+    flex-direction: column;
+`;
 const Btn = styled.button`
-    height: 30px;
+    height: 50px;
     border: 1px solid #333;
     border-radius: 0.4em;
     margin-top: 10px;
@@ -176,5 +195,7 @@ const Btn = styled.button`
     &:disabled{
         display: none;
     }
+    width: 75%;
+    margin: 0 auto;
 `
 

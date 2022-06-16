@@ -16,12 +16,7 @@ import { localStorageGet } from './shared/localStorage';
 const Detail = () => {
     const post_id = useParams().id;
     const history = useHistory();
-<<<<<<< HEAD
     const [getData,setGetData] = React.useState({});;
-=======
-    const [getData,setGetData] = React.useState({});
-    // console.log("post_id: ",post_id);
->>>>>>> hwanhee5
     const dispatch = useDispatch();
 
     //토큰 받아와서 유저정보 획득하기
@@ -69,10 +64,6 @@ const Detail = () => {
     React.useEffect(()=>{
         axios.get(`http://3.38.107.48/cafereview/list/detail/${post_id}`)
         .then(response=> {
-<<<<<<< HEAD
-=======
-            // console.log('respose: ',response.data);
->>>>>>> hwanhee5
             setGetData(response.data);
         });
         handeLoad()
