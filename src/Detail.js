@@ -62,7 +62,9 @@ const Detail = () => {
     };
 
     React.useEffect(()=>{
-        axios.get(`http://3.38.107.48/cafereview/list/detail/${post_id}`)
+        axios.get(`http://3.38.107.48/cafereview/detail/${post_id}`,{
+            headers: {'Authorization': "Bearer " + localStorageGet("jwtToken")},
+        })
         .then(response=> {
             setGetData(response.data);
         });
