@@ -96,11 +96,7 @@ function Main() {
         {post_list.map((item,idx) => (
             <ImageListItem key={item.id}
               onClick={()=>{
-                is_login?( 
                 history.push("/detail/"+item.id)
-                ) : (
-                history.push("/error")
-                )
               }}> 
               <img
                   src={`${item.imgUrl}?w=248&fit=crop&auto=format`}

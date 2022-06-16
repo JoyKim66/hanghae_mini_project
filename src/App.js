@@ -11,7 +11,6 @@ import Signup from "./Signup";
 import Main from "./Main";
 import Detail from "./Detail";
 import Write from "./Write";
-import Error from "./Error";
 
 
 function App() {
@@ -25,7 +24,6 @@ function App() {
         <Route path="/write" exact component={Write} />
         <Route path="/write/:id" exact component={Write} />
         <Route path="/signup" exact component={Signup} />
-        <Route path="/error" exact component={Error} />
       </ConnectedRouter>
     </div>
   );

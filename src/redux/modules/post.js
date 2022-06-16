@@ -147,7 +147,16 @@ export default function reducer(state=initialState,action={}){
           }
           case "post/CATEGORY_LOAD" : {
             console.log(state,action);
-            return {list: action.catagory_data};
+            if (localStorageGet("jwtToken")) {
+                // 1. 로그인해서 들어와서 로드할 때
+                return {...state, list: action.catagory_data, is_token: true };
+              } else if (action.post_data) {
+                // 2. 처음 메인 페이지 들어와서 로드할 때
+                return {...state, list: action.catagory_data, is_token: false };
+              } else {
+                // 3. 로그아웃해서 LOAD 액션할 때
+                return {...state, list: action.catagory_data,is_token: false };
+              }
         }
         default:
         return state;
