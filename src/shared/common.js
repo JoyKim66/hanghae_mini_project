@@ -29,14 +29,22 @@ export const usernameCHK = (username) => {
   return _reg.test(username);
 };
 
-// 무한스크롤
-export const getComment = async ({
-  sortBy = 'id', 
-  page = 1,
-  post_id,
-  size = 5}) => {
+// 댓글에서 더보기 기능
+export const getComment = async ({ sortBy = 'id', page = 1, post_id, size = 4}) => {
   const query = `sortBy=${sortBy}&page=${page}&size=${size}`;
   const response = await fetch(`${BASE_URL}/reply/list/paging/${post_id}?${query}`,{
+    headers: {
+      'Authorization': "Bearer " + localStorageGet("jwtToken") ,
+    },
+  });
+  const body = await response.json();
+  return body;
+};
+
+// 매인에서 더보기 기능
+export const postListGet = async ({sortBy = 'id', page = 1, size = 5}) => {
+  const query = `sortBy=${sortBy}&page=${page}&size=${size}`;
+  const response = await fetch(`${BASE_URL}/cafereview/list/pageing/?${query}`,{
     headers: {
       'Authorization': "Bearer " + localStorageGet("jwtToken") ,
     },
