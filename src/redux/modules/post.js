@@ -157,6 +157,10 @@ export default function reducer(state=initialState,action={}){
               return {...state, is_token: false };
             }
           }
+          case "post/CATEGORY_LOAD" : {
+            // console.log(action);
+            return {list: action.catagory_data};
+        }
         
         default:
         return state;

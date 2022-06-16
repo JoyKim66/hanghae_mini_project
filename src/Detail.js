@@ -16,7 +16,12 @@ import { localStorageGet } from './shared/localStorage';
 const Detail = () => {
     const post_id = useParams().id;
     const history = useHistory();
+<<<<<<< HEAD
     const [getData,setGetData] = React.useState({});;
+=======
+    const [getData,setGetData] = React.useState({});
+    // console.log("post_id: ",post_id);
+>>>>>>> hwanhee5
     const dispatch = useDispatch();
 
     //토큰 받아와서 유저정보 획득하기
@@ -64,6 +69,10 @@ const Detail = () => {
     React.useEffect(()=>{
         axios.get(`http://3.38.107.48/cafereview/list/detail/${post_id}`)
         .then(response=> {
+<<<<<<< HEAD
+=======
+            // console.log('respose: ',response.data);
+>>>>>>> hwanhee5
             setGetData(response.data);
         });
         handeLoad()
@@ -119,7 +128,7 @@ const Container = styled.div`
 `;
 const ImageBox = styled.div`
     width: 50%;
-    height: 500px;
+    height: 600px;
     border: 1px solid #d3d3d3;  
     margin: 20px;  
     display: flex;
@@ -148,7 +157,7 @@ const LikeInner = styled.div`
 `;
 const TextBox = styled.div`
     width: 50%;
-    height: 500px;
+    height: 600px;
     border: 1px solid #d3d3d3;
     display: flex;
     flex-direction: column;

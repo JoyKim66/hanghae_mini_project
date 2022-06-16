@@ -77,18 +77,23 @@ const Write = () => {
 
     const addPost = (e) => {
         e.preventDefault();
-
+        if (!(coffeebeanname&&cafename&&cafereview&&img)) {
+            return alert("게시글 작성내용을 채워주세요");
+        }else if(cafereview.length > 1000){
+            return alert("게시글 내용은 1000자 이하여야 합니다")
+        }else{
         const data = {
             post_data: {cafename,cafereview,coffeebeanname},img
         }
         dispatch(postPostList(data));
-        
-    
+        }
     }
     const editPost = (e) => {
         e.preventDefault();
         if (!(coffeebeanname&&cafename&&cafereview&&img)) {
             return alert("게시글 작성내용을 채워주세요");
+        }else if(cafereview.length > 1000){
+            return alert("게시글 내용은 1000자 이하여야 합니다")
         }else{
         const edited_data = {
             post_data: {cafename,cafereview,coffeebeanname},img
@@ -128,7 +133,7 @@ const Write = () => {
             required
             id="outlined-required"
             label="카페이름" 
-            defaultValue={id? write_data[edit_idx]?.cafename :null}
+            // defaultValue={id? write_data[edit_idx]?.cafename :null}
             onChange={handleNameChange}
                 />
             </TextBox>   
@@ -159,7 +164,7 @@ const Write = () => {
         <TextField
           id="outlined-multiline-static"
           label="카페 후기 상세내용"
-          defaultValue={id? write_data[edit_idx]?.cafereview :null}
+        //   defaultValue={id? write_data[edit_idx]?.cafereview :null}
           multiline
           onChange={handleReviweChange}
           rows={4}

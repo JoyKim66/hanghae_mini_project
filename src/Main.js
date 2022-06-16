@@ -146,9 +146,9 @@ const Category = styled.div`
     
 `;
 const Container = styled(ImageList)`
-  width: 80%;
+  width: 85%;
   height: auto;
-  margin: 0;
+  margin: 0 15% 0 0;
   overflow-y: visible !important;
 `;
 
