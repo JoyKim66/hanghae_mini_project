@@ -12,7 +12,6 @@ import ListItemText from '@mui/material/ListItemText';
 
 import {useHistory} from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
-import { localStorageGet } from './shared/localStorage';
 
 import styled from 'styled-components';
 import writebtn from "./writebtn.png"
@@ -130,9 +129,9 @@ const Category = styled.div`
     
 `;
 const Container = styled(ImageList)`
-  width: 80%;
+  width: 85%;
   height: auto;
-  margin: 0;
+  margin: 0 15% 0 0;
   overflow-y: visible !important;
   }
 `;

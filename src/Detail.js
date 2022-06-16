@@ -15,7 +15,7 @@ const Detail = () => {
     const post_id = useParams().id;
     const history = useHistory();
     const [getData,setGetData] = React.useState({});
-    console.log("post_id: ",post_id);
+    // console.log("post_id: ",post_id);
     const dispatch = useDispatch();
 
 
@@ -34,7 +34,7 @@ const Detail = () => {
     React.useEffect(()=>{
         axios.get(`http://3.38.107.48/cafereview/list/detail/${post_id}`)
         .then(response=> {
-            console.log('respose: ',response.data);
+            // console.log('respose: ',response.data);
             setGetData(response.data);
         })},[])
 
@@ -81,7 +81,7 @@ const Container = styled.div`
 `;
 const ImageBox = styled.div`
     width: 50%;
-    height: 500px;
+    height: 600px;
     border: 1px solid #d3d3d3;  
     margin: 20px;  
     display: flex;
@@ -96,7 +96,7 @@ const Image = styled.img`
 `;
 const TextBox = styled.div`
     width: 50%;
-    height: 500px;
+    height: 600px;
     border: 1px solid #d3d3d3;
     display: flex;
     flex-direction: column;
