@@ -12,21 +12,22 @@ import ListItemText from '@mui/material/ListItemText';
 
 import {useHistory} from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
-import { localStorageGet } from './shared/localStorage';
 
 import styled from 'styled-components';
 import writebtn from "./writebtn.png"
 import { getPostList,getCategoryList } from './redux/modules/post';
-
+import { postListGet } from './shared/common';
+const SIZE = 5; //고정 값
 
 
 function Main() {
     const history = useHistory();
     const dispatch = useDispatch();
-    const post_list = useSelector((state)=>state.post.list)
-    // console.log("post_list: ",post_list);
     const is_login = useSelector((state)=>state.post.is_token)
-    // console.log('is_login',is_login);
+    const [sortBy, setOrder] = React.useState('id');
+    const [page, setOffset] = React.useState(1);
+    const [hasNext, setHasNext] = React.useState(false);
+    const [items, setItems] = React.useState([]);
   
 
 
@@ -46,11 +47,25 @@ function Main() {
       dispatch(getCategoryList(e));
     }
 
+    const handleLoad = async (options) => {
+      const {content, last} = await postListGet(options);
+      if (options.page === 1) {
+        setItems(content);
+      } else {
+        setItems([...items, ...content]);
+      }
+      setOffset(options.page + 1);
+      setHasNext(last);
+    };
+
+    const handleLoadMore = async () => {
+      await handleLoad({ sortBy, page, size: SIZE });
+    };
 
     React.useEffect(()=>{
+      handleLoad({ sortBy, page: 1, size: SIZE })
       dispatch(getPostList());
     },[]);
-
 
   return (
     <WholeContainer>
@@ -63,7 +78,7 @@ function Main() {
                   <ListItem disablePadding key={idx}>
                   <ListItemButton onClick={clickedCategory} 
                   value={coffeebean}>
-                    <ListItemText primary={coffeebean}   />
+                    <ListItemText primary={coffeebean}/>
                   </ListItemButton>
                 </ListItem>
               ))}
@@ -74,41 +89,42 @@ function Main() {
         <Container sx={{ width: 1000, }}>
         <ImageListItem key="Subheader" cols={2}>
         </ImageListItem>
-        {post_list.map((item,idx) => (
+        {items.map((item,idx) => (
             <ImageListItem key={item.id}
-            onClick={()=>{
-              is_login?( 
-              history.push("/detail/"+item.id)
-              ) : (
-              history.push("/error")
-              )
-            }}> 
-            <img
-                src={`${item.imgUrl}?w=248&fit=crop&auto=format`}
-                srcSet={`${item.imgUrl}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                alt={item.cafename}
-                loading="lazy"
-            />
-            <ImageListItemBar
-                title={item.cafename}
-                subtitle={item.nickname}
-                actionIcon={
-                <IconButton
-                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                    aria-label={`info about ${item.cafename}`}
-                >                   
-                </IconButton>
-                }
-            />
+              onClick={()=>{
+                is_login?( 
+                history.push("/detail/"+item.id)
+                ) : (
+                history.push("/error")
+                )
+              }}> 
+              <img
+                  src={`${item.imgUrl}?w=248&fit=crop&auto=format`}
+                  srcSet={`${item.imgUrl}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                  alt={item.cafename}
+                  loading="lazy"
+              />
+              <ImageListItemBar
+                  title={item.cafename}
+                  subtitle={item.nickname}
+                  actionIcon={
+                  <IconButton
+                      sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                      aria-label={`info about ${item.cafename}`}
+                  >                   
+                  </IconButton>
+                  }
+              />
             </ImageListItem>
         ))}
+        <Btn disabled={hasNext} onClick={handleLoadMore}>더보기</Btn>
         {is_login&&
-        <AddButton>
-            <Img src={writebtn} onClick={()=>{
-                  history.push("/write")
-            }}/>
-        </AddButton>
-                }
+          <AddButton>
+              <Img src={writebtn} onClick={()=>{
+                    history.push("/write")
+              }}/>
+          </AddButton>
+        }
         </Container>
     </WholeContainer>
   );
@@ -134,7 +150,6 @@ const Container = styled(ImageList)`
   height: auto;
   margin: 0;
   overflow-y: visible !important;
-  }
 `;
 
 const AddButton = styled.div`
@@ -149,8 +164,17 @@ const Img = styled.img`
   top: 85%;
   left: 90%;
 `;
-const List = styled.li`
+const List = styled.ul`
   cursor: url(myBall.cur),auto;
 `;
-
+const Btn = styled.button`
+    height: 30px;
+    border: 1px solid #333;
+    border-radius: 0.4em;
+    margin-top: 10px;
+    display: block;
+    &:disabled{
+        display: none;
+    }
+`
 
