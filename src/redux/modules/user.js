@@ -4,7 +4,7 @@ import jwtDecode from "jwt-decode";
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { localStorageRemove, localStorageSet } from "../../shared/localStorage";
-import { postLoad } from "./post";
+import { postLoad, postPostList } from "./post";
 import {BASE_URL} from '../../assets/config';
 
 // Actions Type

@@ -29,6 +29,9 @@ function Main() {
     const [page, setOffset] = React.useState(1);
     const [hasNext, setHasNext] = React.useState(false);
     const [items, setItems] = React.useState([]);
+    const post_list = useSelector((state)=>state.post.list)
+    // console.log("post_list: ",post_list);
+    // console.log('is_login',is_login);
   
 
 
@@ -90,7 +93,7 @@ function Main() {
         <Container sx={{ width: 1000, }}>
         <ImageListItem key="Subheader" cols={2}>
         </ImageListItem>
-        {items.map((item,idx) => (
+        {post_list.map((item,idx) => (
             <ImageListItem key={item.id}
               onClick={()=>{
                 is_login?( 
@@ -164,10 +167,7 @@ const AddButton = styled.div`
     justify-content: flex-end;
 
 `;
-const rotatedAnimation = keyframes`
-  
 
-`;
 const Img = styled.img`
   max-width: 60px;
   min-height: 60px;

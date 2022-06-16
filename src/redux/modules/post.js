@@ -38,7 +38,7 @@ export const getPostList =() => {
 
 export const getCategoryList = (e) => {
     return async function(dispatch){
-        // console.log("ddd");
+        // console.log(e.target.innerText);
         axios({
             method: "get",
             url: `http://3.38.107.48/cafereview/list/${e.target.innerText}`,
@@ -133,18 +133,6 @@ export const deletePostList = (id) => {
 //리듀서
 export default function reducer(state=initialState,action={}){
     switch(action.type) {
-        // case "post/ADD" : {
-        //     // console.log(state,action);
-        //     const new_post_obj = [{
-        //         img: action.post_data.img,
-        //         cafename: action.post_data.cafename,
-        //         review: action.post_data.review,
-        //         coffeebeanname: action.post_data.coffeebeanname,
-        //     }]
-        //     console.log({list:new_post_obj});
-        //     return {list:new_post_obj};
-        // }
-        
         case "post/LOAD": {
             if (localStorageGet("jwtToken")) {
               // 1. 로그인해서 들어와서 로드할 때
@@ -158,10 +146,9 @@ export default function reducer(state=initialState,action={}){
             }
           }
           case "post/CATEGORY_LOAD" : {
-            // console.log(action);
+            console.log(state,action);
             return {list: action.catagory_data};
         }
-        
         default:
         return state;
     }
