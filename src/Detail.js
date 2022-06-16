@@ -27,24 +27,23 @@ const Detail = () => {
     const userId = decoded_token.Userid;
     const [Like, setLike] = React.useState(false);
 
-    const toggleLike = async () => {
+    const toggleLike = () => {
         if(Like){ // 이미 좋아요를 눌렀는데 다시 눌렀을 때
-            await axios.get(`http://3.38.107.48/like/${post_id}`,{
+            axios.get(`http://3.38.107.48/like/${post_id}`,{
                 headers: {'Authorization': "Bearer " + localStorageGet("jwtToken")},
             })
             .then(res => {
                 setLike(false);
             })
         } else if(!Like) {  // 아무것도 누르지 않은 상태일 때
-            try{
-                await axios.get(`http://3.38.107.48/unlike/${post_id}`,{
+            try {
+                axios.get(`http://3.38.107.48/unlike/${post_id}`,{
                     headers: {'Authorization': "Bearer " + localStorageGet("jwtToken")},
                 })
                 .then((res) => {
                     setLike(true);
                 });
-            }
-            catch(err){
+            }catch(err){
                 if(err.response.status === 403){
                     window.alert("로그인한 사용자만 이용할수 있습니다.")
                 } 
@@ -52,12 +51,22 @@ const Detail = () => {
         }
     };
 
+    const handeLoad = () => {
+        axios.get(`http://3.38.107.48/like/check/${post_id}`,{
+            headers: {'Authorization': "Bearer " + localStorageGet("jwtToken")},
+        })
+        .then(res => {
+            console.log(res.data)
+            setLike(res.data);
+        })
+    };
 
     React.useEffect(()=>{
         axios.get(`http://3.38.107.48/cafereview/list/detail/${post_id}`)
         .then(response=> {
             setGetData(response.data);
         });
+        handeLoad()
     },[Like])
 
     const postDelete = () => {
@@ -71,8 +80,8 @@ const Detail = () => {
                 <div className='inner'>
                     <NameBox>{getData?.cafename}</NameBox>
                     <LikeInner onClick={toggleLike} className={Like ? null : "is_on"}>
-                            <span className="like_off"><img src={like_off} alt="좋아요 아이콘"/></span>
-                            <span className="like_on"><img src={like_on} alt="좋아요 아이콘"/></span>
+                        <span className="like_off"><img src={like_off} alt="좋아요 아이콘"/></span>
+                        <span className="like_on"><img src={like_on} alt="좋아요 아이콘"/></span>
                     </LikeInner>
                 </div>
                 <CategoryBox>원두이름:{getData?.coffeebeanname}</CategoryBox>
